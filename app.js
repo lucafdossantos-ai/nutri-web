@@ -3,6 +3,7 @@ function calcular() {
   const idade = Number(document.getElementById("idade").value);
   const peso = Number(document.getElementById("peso").value);
   const altura = Number(document.getElementById("altura").value);
+  const objetivo = document.getElementById("objetivo").value;
 
   let tmb;
 
@@ -12,5 +13,11 @@ function calcular() {
     tmb = 10*peso + 6.25*altura - 5*idade - 161;
   }
 
+  let meta = tmb;
+
+  if (objetivo === "emagrecer") meta -= 400;
+  if (objetivo === "ganhar") meta += 300;
+
   document.getElementById("resultado").innerText = Math.round(tmb);
+  document.getElementById("meta").innerText = Math.round(meta);
 }
