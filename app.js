@@ -1,4 +1,21 @@
 function calcular() {
+  let total = 0;
+
+function adicionar() {
+  const food = document.getElementById("food").value;
+  const kcal = Number(document.getElementById("kcal").value);
+
+  total += kcal;
+
+  const li = document.createElement("li");
+  li.innerText = `${food} — ${kcal} kcal`;
+  document.getElementById("lista").appendChild(li);
+
+  document.getElementById("total").innerText = total;
+
+  const meta = Number(document.getElementById("meta").innerText) || 0;
+  document.getElementById("restam").innerText = meta - total;
+}
   const sexo = document.getElementById("sexo").value;
   const idade = Number(document.getElementById("idade").value);
   const peso = Number(document.getElementById("peso").value);
