@@ -4,7 +4,6 @@
 <meta charset="UTF-8">
 <title>Nutri+</title>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<script src="https://unpkg.com/lucide@latest"></script>
 
 <style>
 :root{
@@ -13,13 +12,15 @@
   --text:#fff;
   --muted:#9aa4bf;
   --primary:#38bdf8;
+  --danger:#ef4444;
 }
+*{box-sizing:border-box}
 body{
   margin:0;
   background:var(--bg);
   color:var(--text);
   font-family:system-ui;
-  padding-bottom:90px;
+  padding-bottom:80px;
 }
 section{display:none;padding:20px}
 section.active{display:block}
@@ -29,7 +30,7 @@ section.active{display:block}
   border-radius:16px;
   margin-bottom:16px;
 }
-label{font-size:14px;color:var(--muted);display:block;margin-top:10px}
+label{font-size:14px;color:var(--muted);margin-top:10px;display:block}
 input,select{
   width:100%;
   padding:12px;
@@ -39,14 +40,15 @@ input,select{
 }
 button{
   width:100%;
-  margin-top:16px;
   padding:14px;
-  border:none;
+  margin-top:16px;
   border-radius:14px;
-  background:var(--primary);
+  border:none;
   font-size:16px;
   font-weight:600;
+  background:var(--primary);
 }
+button.danger{background:var(--danger)}
 .autocomplete{
   background:#00000055;
   border-radius:12px;
@@ -56,6 +58,23 @@ button{
   cursor:pointer;
 }
 .autocomplete div:hover{background:#ffffff22}
+canvas{width:100%;height:120px}
+.calendar{
+  display:grid;
+  grid-template-columns:repeat(7,1fr);
+  gap:6px;
+}
+.calendar div{
+  padding:10px;
+  text-align:center;
+  border-radius:10px;
+  background:#ffffff22;
+}
+.calendar .active{
+  background:var(--primary);
+  color:#000;
+}
+.small{font-size:13px;color:var(--muted)}
 nav{
   position:fixed;
   bottom:0;
@@ -72,7 +91,6 @@ nav button{
   color:var(--muted);
 }
 nav button.active{color:var(--primary)}
-.small{font-size:13px;color:var(--muted)}
 </style>
 </head>
 
@@ -147,13 +165,27 @@ nav button.active{color:var(--primary)}
     <p>🔥 <span id="totalKcal">0</span> kcal</p>
     <p>🍞 <span id="totalCarb">0</span> g | 🥩 <span id="totalProt">0</span> g | 🧈 <span id="totalFat">0</span> g</p>
 
+    <canvas id="grafico"></canvas>
+
+    <button class="danger" onclick="limparDia()">Limpar dia</button>
+
     <ul id="lista"></ul>
+  </div>
+</section>
+
+<!-- HISTÓRICO -->
+<section id="historico">
+  <div class="card">
+    <h3>📅 Histórico</h3>
+    <div id="calendar" class="calendar"></div>
+    <p class="small" id="histInfo">Selecione um dia</p>
   </div>
 </section>
 
 <nav>
   <button onclick="go('perfil')" id="btn-perfil">Perfil</button>
   <button onclick="go('refeicoes')" id="btn-refeicoes">Refeições</button>
+  <button onclick="go('historico')" id="btn-historico">Histórico</button>
 </nav>
 
 <script src="app.js"></script>
