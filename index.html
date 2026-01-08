@@ -4,6 +4,9 @@
 <meta charset="utf-8" />
 <title>Nutri+ Web</title>
 
+<!-- ÍCONES -->
+<script src="https://unpkg.com/lucide@latest"></script>
+
 <style>
   :root {
     --bg: #0b1220;
@@ -22,14 +25,22 @@
     color: var(--text);
   }
 
-  h1 {
-    margin-bottom: 6px;
+  .fade { animation: fade .35s ease; }
+
+  @keyframes fade {
+    from { opacity: 0; transform: translateY(6px); }
+    to   { opacity: 1; transform: translateY(0); }
   }
+
+  h1 { margin-bottom: 6px; display:flex; align-items:center; gap:6px; }
 
   h2 {
     margin-top: 18px;
     margin-bottom: 10px;
     font-size: 20px;
+    display:flex;
+    align-items:center;
+    gap:8px;
   }
 
   .box {
@@ -55,6 +66,13 @@
     border: 1px solid var(--border);
     background: #0a0f1b;
     color: var(--text);
+    transition: border .2s, transform .1s;
+  }
+
+  input:focus, select:focus {
+    border: 1px solid var(--primary);
+    outline: none;
+    transform: translateY(-1px);
   }
 
   button {
@@ -65,15 +83,56 @@
     color: white;
     font-weight: 600;
     cursor: pointer;
+    display:inline-flex;
+    align-items:center;
+    gap:6px;
+    transition: transform .12s, opacity .15s;
   }
 
-  button.danger {
-    background: var(--danger);
+  button:active { transform: scale(.96); opacity: .75; }
+
+  button.danger { background: var(--danger); }
+
+  /* lista de refeições */
+  .meal-item {
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    padding:6px 0;
+    border-bottom:1px solid #18243d;
   }
 
-  ul {
-    margin-top: 8px;
-    padding-left: 18px;
+  .meal-item button {
+    background:#243b74;
+    padding:6px 8px;
+  }
+
+  .search-box {
+    position:relative;
+  }
+
+  .search-results {
+    position:absolute;
+    top:100%;
+    left:0;
+    right:0;
+    background:#0f172a;
+    border:1px solid var(--border);
+    border-radius:10px;
+    margin-top:4px;
+    max-height:180px;
+    overflow-y:auto;
+    display:none;
+    z-index:5;
+  }
+
+  .search-results div {
+    padding:8px 10px;
+    cursor:pointer;
+  }
+
+  .search-results div:hover {
+    background:#1e293b;
   }
 
   canvas {
@@ -85,16 +144,20 @@
 </style>
 </head>
 
-<body>
+<body class="fade">
 
-<h1>Nutri+</h1>
+<h1>
+  <i data-lucide="apple"></i>
+  Nutri+
+</h1>
+
 <p style="color:#9ca3af; margin-top:0;">
   Seu controle diário — simples e inteligente.
 </p>
 
-<h2>Perfil</h2>
+<h2><i data-lucide="user"></i> Perfil</h2>
 
-<div class="box">
+<div class="box fade">
   <label>Sexo (m/f)</label>
   <input id="sexo">
 
@@ -107,7 +170,10 @@
   <label>Altura (cm)</label>
   <input id="altura" type="number">
 
-  <button onclick="calcular()">Calcular TMB</button>
+  <button onclick="calcular()">
+    <i data-lucide="activity"></i>
+    Calcular TMB
+  </button>
 
   <p><strong>TMB:</strong> <span id="resultado">—</span></p>
 
@@ -122,9 +188,16 @@
 </div>
 
 
-<h2>Refeições do dia</h2>
+<h2><i data-lucide="utensils-crossed"></i> Refeições do dia</h2>
 
-<div class="box">
+<div class="box fade">
+
+  <!-- BUSCAR ALIMENTOS -->
+  <label>Buscar alimento</label>
+  <div class="search-box">
+    <input id="search" oninput="buscarAlimento()" placeholder="Ex: arroz, frango, banana…">
+    <div id="results" class="search-results"></div>
+  </div>
 
   <label>Alimento</label>
   <input id="food" oninput="preencherAutomatico()">
@@ -141,7 +214,10 @@
   <label>Gorduras (g)</label>
   <input id="fat" type="number">
 
-  <button onclick="adicionar()">Adicionar</button>
+  <button onclick="adicionar()">
+    <i data-lucide="plus"></i>
+    Adicionar
+  </button>
 
   <p><strong>Total do dia:</strong> <span id="total">0</span></p>
   <p><strong>Restam:</strong> <span id="restam">0</span></p>
@@ -150,7 +226,10 @@
   <p><strong>Proteína:</strong> <span id="tprot">0</span></p>
   <p><strong>Gorduras:</strong> <span id="tfat">0</span></p>
 
-  <button class="danger" onclick="limparDia()">Limpar dia</button>
+  <button class="danger" onclick="limparDia()">
+    <i data-lucide="trash-2"></i>
+    Limpar dia
+  </button>
 
   <h3>Sugestões</h3>
   <p id="sugestoes">—</p>
@@ -163,6 +242,10 @@
 </div>
 
 <script src="app.js"></script>
+
+<script>
+  lucide.createIcons();
+</script>
 
 </body>
 </html>
