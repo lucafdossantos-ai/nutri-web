@@ -112,6 +112,41 @@ nav button.active{color:var(--primary)}
   </div>
 </section>
 
+<!-- PERFIL / TMB -->
+<section id="perfil">
+  <div class="card">
+    <p>👤 <strong id="userLabel"></strong></p>
+
+    <label>Sexo</label>
+    <select id="sexo">
+      <option value="m">Masculino</option>
+      <option value="f">Feminino</option>
+    </select>
+
+    <label>Idade</label>
+    <input id="idade" type="number">
+
+    <label>Peso (kg)</label>
+    <input id="peso" type="number">
+
+    <label>Altura (cm)</label>
+    <input id="altura" type="number">
+
+    <label>Objetivo</label>
+    <select id="objetivo">
+      <option value="manter">Manter</option>
+      <option value="emagrecer">Emagrecer</option>
+      <option value="ganhar">Ganhar massa</option>
+    </select>
+
+    <button onclick="calcularTMB()">Calcular TMB</button>
+
+    <p>TMB: <strong><span id="tmb">—</span></strong></p>
+    <p>Meta diária: <strong><span id="meta">—</span></strong></p>
+    <p class="small">Restam: <strong><span id="restante">—</span></strong> kcal</p>
+  </div>
+</section>
+
 <!-- REFEIÇÕES -->
 <section id="refeicoes">
   <div class="card">
@@ -156,6 +191,7 @@ nav button.active{color:var(--primary)}
 </section>
 
 <nav>
+  <button onclick="go('perfil')" id="btn-perfil"><i data-lucide="user"></i></button>
   <button onclick="go('refeicoes')" id="btn-refeicoes"><i data-lucide="utensils"></i></button>
   <button onclick="go('historico')" id="btn-historico"><i data-lucide="calendar"></i></button>
 </nav>
