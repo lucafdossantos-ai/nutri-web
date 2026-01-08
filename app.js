@@ -1,59 +1,77 @@
-const tabela = {
- arroz: { kcal:130, carb:28, prot:2.7, fat:0.3 },
- frango: { kcal:165, carb:0, prot:31, fat:3.6 },
- banana:{ kcal:96, carb:25, prot:1.3, fat:0.3 }
+const alimentos = {
+  arroz: 130,
+  frango: 165,
+  banana: 89,
+  ovo: 155,
+  macarrao: 131,
+  batata: 77,
+  carne: 250,
+  peixe: 206
 };
 
 let total = 0;
-let meta = 0;
 
-function buscarAlimento(){
- const v = search.value.toLowerCase();
- results.innerHTML = "";
- Object.keys(tabela)
- .filter(a=>a.includes(v))
- .forEach(a=>{
-   const d = document.createElement("div");
-   d.textContent = a;
-   d.onclick = ()=>{ food.value=a; preencherAutomatico(); results.innerHTML=""; }
-   results.appendChild(d);
- });
+function go(id) {
+  document.querySelectorAll("section").forEach(s => s.classList.remove("active"));
+  document.getElementById(id).classList.add("active");
+
+  document.querySelectorAll("nav button").forEach(b => b.classList.remove("active"));
+  document.getElementById("btn-" + id).classList.add("active");
 }
 
-function preencherAutomatico(){
- const a = tabela[food.value.toLowerCase()];
- if(!a) return;
- kcal.value = a.kcal;
- carb.value = a.carb;
- prot.value = a.prot;
- fat.value = a.fat;
+function calcularTMB() {
+  const sexo = document.getElementById("sexo").value;
+  const idade = +document.getElementById("idade").value;
+  const peso = +document.getElementById("peso").value;
+  const altura = +document.getElementById("altura").value;
+  const objetivo = document.getElementById("objetivo").value;
+
+  if (!idade || !peso || !altura) {
+    alert("Preencha todos os dados");
+    return;
+  }
+
+  let tmb =
+    sexo === "m"
+      ? 88.36 + 13.4 * peso + 4.8 * altura - 5.7 * idade
+      : 447.6 + 9.2 * peso + 3.1 * altura - 4.3 * idade;
+
+  let meta = tmb;
+  if (objetivo === "emagrecer") meta -= 400;
+  if (objetivo === "ganhar") meta += 400;
+
+  document.getElementById("tmb").textContent = Math.round(tmb);
+  document.getElementById("meta").textContent = Math.round(meta);
 }
 
-function adicionar(){
- const k = Number(kcal.value);
- if(!k) return alert("Preencha os dados");
+function adicionar() {
+  const nome = document.getElementById("food").value.toLowerCase();
+  const gramas = +document.getElementById("gramas").value;
 
- total += k;
- document.getElementById("total").innerText = total;
- document.getElementById("restam").innerText = meta-total;
+  if (!alimentos[nome]) {
+    alert("Alimento não encontrado");
+    return;
+  }
+
+  const kcal = (alimentos[nome] / 100) * gramas;
+  total += kcal;
+
+  document.getElementById("total").textContent = Math.round(total);
+
+  const li = document.createElement("li");
+  li.innerHTML = `
+    ${gramas}g ${nome} — ${Math.round(kcal)} kcal
+    <button onclick="this.parentElement.remove()">✕</button>
+  `;
+  document.getElementById("lista").appendChild(li);
 }
 
-function limparDia(){
- total = 0;
- lista.innerHTML = "";
- total.innerText = 0;
- restam.innerText = meta;
+function limpar() {
+  total = 0;
+  document.getElementById("total").textContent = 0;
+  document.getElementById("lista").innerHTML = "";
 }
 
-function calcularTMB(){
- const p = +peso.value, a = +altura.value, i = +idade.value;
- let tmb = 10*p + 6.25*a - 5*i + 5;
- document.getElementById("tmb").innerText = tmb;
-
- meta = tmb;
- if(objetivo.value==="emagrecer") meta-=400;
- if(objetivo.value==="ganhar") meta+=300;
-
- document.getElementById("meta").innerText = meta;
- document.getElementById("restam").innerText = meta-total;
+function toggleTheme() {
+  document.body.classList.toggle("light");
 }
