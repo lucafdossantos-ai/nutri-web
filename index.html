@@ -4,7 +4,6 @@
 <meta charset="UTF-8">
 <title>Nutri+</title>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
 <script src="https://unpkg.com/lucide@latest"></script>
 
 <style>
@@ -71,7 +70,23 @@ li{
   border-radius:12px;
   margin-top:10px;
 }
+.small{font-size:13px;color:var(--muted)}
 canvas{display:block;margin:20px auto}
+
+/* autocomplete */
+.autocomplete{
+  background:rgba(0,0,0,.35);
+  border-radius:12px;
+  margin-top:6px;
+}
+.autocomplete div{
+  padding:10px;
+  cursor:pointer;
+}
+.autocomplete div:hover{
+  background:rgba(255,255,255,.08);
+}
+
 nav{
   position:fixed;
   bottom:0;
@@ -89,7 +104,6 @@ nav button{
   width:auto;
 }
 nav button.active{color:var(--primary)}
-.center{text-align:center}
 </style>
 </head>
 
@@ -104,10 +118,9 @@ nav button.active{color:var(--primary)}
 
 <!-- LOGIN -->
 <section id="login" class="active">
-  <div class="card center">
-    <h2>Bem-vindo 👋</h2>
+  <div class="card">
     <label>Seu nome</label>
-    <input id="username" placeholder="Ex: Lucas">
+    <input id="username">
     <button onclick="login()">Entrar</button>
   </div>
 </section>
@@ -149,18 +162,30 @@ nav button.active{color:var(--primary)}
 <!-- REFEIÇÕES -->
 <section id="refeicoes">
   <div class="card">
-    <label>Alimento</label>
-    <input id="food" placeholder="arroz, frango...">
+
+    <label>Categoria</label>
+    <select id="categoria" onchange="filtrarCategoria()">
+      <option value="todos">Todos</option>
+      <option value="carbo">Carboidratos</option>
+      <option value="proteina">Proteínas</option>
+      <option value="fruta">Frutas</option>
+      <option value="legume">Legumes</option>
+      <option value="laticinio">Laticínios</option>
+    </select>
+
+    <label>Buscar alimento</label>
+    <input id="search" oninput="autocomplete()">
+    <div id="auto" class="autocomplete"></div>
 
     <label>Quantidade (g)</label>
     <input id="gramas" type="number" value="100">
 
     <button onclick="adicionar()">Adicionar</button>
 
-    <p>🔥 <span id="totalKcal">0</span> kcal</p>
-    <p>🍞 <span id="totalCarb">0</span> g carb</p>
-    <p>🥩 <span id="totalProt">0</span> g prot</p>
-    <p>🧈 <span id="totalFat">0</span> g gordura</p>
+    <p>🔥 <strong><span id="totalKcal">0</span></strong> kcal</p>
+    <p class="small">Restam: <strong><span id="restante">—</span></strong> kcal</p>
+
+    <p>🍞 <span id="totalCarb">0</span> g | 🥩 <span id="totalProt">0</span> g | 🧈 <span id="totalFat">0</span> g</p>
 
     <canvas id="grafico" width="200" height="200"></canvas>
 
@@ -171,10 +196,10 @@ nav button.active{color:var(--primary)}
 </section>
 
 <nav>
-  <button id="btn-perfil" onclick="go('perfil')">
+  <button onclick="go('perfil')" id="btn-perfil">
     <i data-lucide="user"></i>
   </button>
-  <button id="btn-refeicoes" onclick="go('refeicoes')">
+  <button onclick="go('refeicoes')" id="btn-refeicoes">
     <i data-lucide="utensils-crossed"></i>
   </button>
 </nav>
