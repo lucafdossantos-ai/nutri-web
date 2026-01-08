@@ -4,7 +4,6 @@
 <meta charset="UTF-8">
 <title>Nutri+</title>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
 <script src="https://unpkg.com/lucide@latest"></script>
 
 <style>
@@ -15,13 +14,6 @@
   --muted:#9aa4bf;
   --primary:#38bdf8;
 }
-body.light{
-  --bg:#f4f6fb;
-  --card:#fff;
-  --text:#111827;
-  --muted:#6b7280;
-}
-*{box-sizing:border-box}
 body{
   margin:0;
   background:var(--bg);
@@ -29,21 +21,15 @@ body{
   font-family:system-ui;
   padding-bottom:90px;
 }
-header{
-  padding:20px;
-  display:flex;
-  justify-content:space-between;
-  align-items:center;
-}
 section{display:none;padding:20px}
 section.active{display:block}
 .card{
   background:var(--card);
   padding:16px;
-  border-radius:18px;
+  border-radius:16px;
   margin-bottom:16px;
 }
-label{font-size:14px;color:var(--muted);margin-top:10px;display:block}
+label{font-size:14px;color:var(--muted);display:block;margin-top:10px}
 input,select{
   width:100%;
   padding:12px;
@@ -52,39 +38,24 @@ input,select{
   margin-top:6px;
 }
 button{
-  margin-top:16px;
   width:100%;
+  margin-top:16px;
   padding:14px;
-  border-radius:14px;
   border:none;
-  font-size:16px;
+  border-radius:14px;
   background:var(--primary);
+  font-size:16px;
   font-weight:600;
 }
 .autocomplete{
-  background:rgba(0,0,0,.35);
+  background:#00000055;
   border-radius:12px;
 }
 .autocomplete div{
   padding:10px;
   cursor:pointer;
 }
-.autocomplete div:hover{
-  background:rgba(255,255,255,.08);
-}
-.progress{
-  height:10px;
-  background:rgba(255,255,255,.2);
-  border-radius:10px;
-  overflow:hidden;
-}
-.progress div{
-  height:100%;
-  background:var(--primary);
-  width:0%;
-}
-canvas{display:block;margin:20px auto}
-.small{font-size:13px;color:var(--muted)}
+.autocomplete div:hover{background:#ffffff22}
 nav{
   position:fixed;
   bottom:0;
@@ -101,14 +72,11 @@ nav button{
   color:var(--muted);
 }
 nav button.active{color:var(--primary)}
+.small{font-size:13px;color:var(--muted)}
 </style>
 </head>
 
 <body>
-
-<header>
-  <h1>🍏 Nutri+</h1>
-</header>
 
 <!-- LOGIN -->
 <section id="login" class="active">
@@ -152,31 +120,22 @@ nav button.active{color:var(--primary)}
     <p>Meta diária: <strong><span id="meta">—</span></strong></p>
     <p class="small">Restam: <strong><span id="restante">—</span></strong> kcal</p>
   </div>
-
-  <div class="card">
-    <h3>🎯 Metas de Macros (%)</h3>
-
-    <label>Carboidratos (%)</label>
-    <input id="metaCarb" type="number" value="50">
-
-    <label>Proteínas (%)</label>
-    <input id="metaProt" type="number" value="30">
-
-    <label>Gorduras (%)</label>
-    <input id="metaFat" type="number" value="20">
-
-    <div class="small">Progresso</div>
-    <div class="progress"><div id="barCarb"></div></div>
-    <div class="progress"><div id="barProt"></div></div>
-    <div class="progress"><div id="barFat"></div></div>
-  </div>
 </section>
 
 <!-- REFEIÇÕES -->
 <section id="refeicoes">
   <div class="card">
 
-    <label>Buscar alimento, bebida ou suplemento</label>
+    <label>Categoria</label>
+    <select id="categoria" onchange="filtrarCategoria()">
+      <option value="Todas">Todas</option>
+      <option value="Alimentos">Alimentos</option>
+      <option value="Bebidas">Bebidas</option>
+      <option value="Bebidas Zero">Bebidas Zero</option>
+      <option value="Suplementos">Suplementos</option>
+    </select>
+
+    <label>Buscar</label>
     <input id="search" oninput="autocomplete()">
     <div id="auto" class="autocomplete"></div>
 
@@ -188,18 +147,15 @@ nav button.active{color:var(--primary)}
     <p>🔥 <span id="totalKcal">0</span> kcal</p>
     <p>🍞 <span id="totalCarb">0</span> g | 🥩 <span id="totalProt">0</span> g | 🧈 <span id="totalFat">0</span> g</p>
 
-    <canvas id="graficoDia" width="300" height="120"></canvas>
-
     <ul id="lista"></ul>
   </div>
 </section>
 
 <nav>
-  <button onclick="go('perfil')" id="btn-perfil"><i data-lucide="user"></i></button>
-  <button onclick="go('refeicoes')" id="btn-refeicoes"><i data-lucide="utensils"></i></button>
+  <button onclick="go('perfil')" id="btn-perfil">Perfil</button>
+  <button onclick="go('refeicoes')" id="btn-refeicoes">Refeições</button>
 </nav>
 
 <script src="app.js"></script>
-<script>lucide.createIcons()</script>
 </body>
 </html>
