@@ -28,7 +28,7 @@ body{
   background:var(--bg);
   color:var(--text);
   font-family:system-ui;
-  padding-bottom:80px;
+  padding-bottom:90px;
 }
 header{
   padding:20px;
@@ -42,7 +42,7 @@ section.active{display:block;animation:fade .3s}
 .card{
   background:var(--card);
   padding:16px;
-  border-radius:16px;
+  border-radius:18px;
   margin-bottom:16px;
 }
 label{font-size:14px;color:var(--muted);margin-top:10px;display:block}
@@ -71,6 +71,7 @@ li{
   border-radius:12px;
   margin-top:10px;
 }
+canvas{display:block;margin:20px auto}
 nav{
   position:fixed;
   bottom:0;
@@ -88,6 +89,7 @@ nav button{
   width:auto;
 }
 nav button.active{color:var(--primary)}
+.center{text-align:center}
 </style>
 </head>
 
@@ -100,8 +102,21 @@ nav button.active{color:var(--primary)}
   </button>
 </header>
 
-<section id="perfil" class="active">
+<!-- LOGIN -->
+<section id="login" class="active">
+  <div class="card center">
+    <h2>Bem-vindo 👋</h2>
+    <label>Seu nome</label>
+    <input id="username" placeholder="Ex: Lucas">
+    <button onclick="login()">Entrar</button>
+  </div>
+</section>
+
+<!-- PERFIL -->
+<section id="perfil">
   <div class="card">
+    <p>👤 <strong id="userLabel"></strong></p>
+
     <label>Sexo</label>
     <select id="sexo">
       <option value="m">Masculino</option>
@@ -131,20 +146,23 @@ nav button.active{color:var(--primary)}
   </div>
 </section>
 
+<!-- REFEIÇÕES -->
 <section id="refeicoes">
   <div class="card">
     <label>Alimento</label>
-    <input id="food" placeholder="Ex: arroz">
+    <input id="food" placeholder="arroz, frango...">
 
     <label>Quantidade (g)</label>
     <input id="gramas" type="number" value="100">
 
     <button onclick="adicionar()">Adicionar</button>
 
-    <p>🔥 Calorias: <strong><span id="totalKcal">0</span></strong></p>
-    <p>🍞 Carboidratos: <strong><span id="totalCarb">0</span></strong> g</p>
-    <p>🥩 Proteínas: <strong><span id="totalProt">0</span></strong> g</p>
-    <p>🧈 Gorduras: <strong><span id="totalFat">0</span></strong> g</p>
+    <p>🔥 <span id="totalKcal">0</span> kcal</p>
+    <p>🍞 <span id="totalCarb">0</span> g carb</p>
+    <p>🥩 <span id="totalProt">0</span> g prot</p>
+    <p>🧈 <span id="totalFat">0</span> g gordura</p>
+
+    <canvas id="grafico" width="200" height="200"></canvas>
 
     <ul id="lista"></ul>
 
@@ -153,7 +171,7 @@ nav button.active{color:var(--primary)}
 </section>
 
 <nav>
-  <button id="btn-perfil" class="active" onclick="go('perfil')">
+  <button id="btn-perfil" onclick="go('perfil')">
     <i data-lucide="user"></i>
   </button>
   <button id="btn-refeicoes" onclick="go('refeicoes')">
