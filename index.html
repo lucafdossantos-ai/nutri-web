@@ -1,126 +1,122 @@
 <!DOCTYPE html>
-<html>
-  <head>
-    <meta charset="utf-8" />
-    <title>Nutri+ Web</title>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8" />
+<title>Nutri+ Web</title>
 
-    <style>
-      body {
-        font-family: Arial;
-        padding: 12px;
-        background: #0f172a;
-        color: #e5e7eb;
-      }
+<style>
+  body {
+    font-family: Arial, Helvetica, sans-serif;
+    padding: 16px;
+    background: #0f172a;
+    color: #e5e7eb;
+  }
 
-      .box {
-        padding: 10px;
-        border: 1px solid #1f2937;
-        border-radius: 10px;
-        margin-top: 10px;
-        background: #111827;
-      }
+  .box {
+    border: 1px solid #374151;
+    padding: 12px;
+    margin-top: 14px;
+    border-radius: 10px;
+    background: #111827;
+  }
 
-      input, select {
-        width: 100%;
-        margin-top: 6px;
-        padding: 6px;
-        border-radius: 6px;
-        border: 1px solid #374151;
-        background: #020617;
-        color: #e5e7eb;
-      }
+  input, select {
+    width: 100%;
+    padding: 6px;
+    margin-top: 6px;
+    margin-bottom: 10px;
+    border-radius: 6px;
+    border: 1px solid #4b5563;
+    background: #020617;
+    color: #e5e7eb;
+  }
 
-      button {
-        margin-top: 10px;
-        padding: 8px 10px;
-        border-radius: 6px;
-        border: none;
-        background: #2563eb;
-        color: white;
-      }
+  button {
+    margin-top: 10px;
+    padding: 8px 12px;
+    border-radius: 6px;
+    border: none;
+    background: #2563eb;
+    color: white;
+  }
 
-      ul {
-        margin-top: 10px;
-      }
+  ul { margin-top: 10px; }
+</style>
+</head>
 
-      canvas {
-        background: #020617;
-        border-radius: 10px;
-        margin-top: 10px;
-        width: 100%;
-        height: 150px;
-      }
-    </style>
-  </head>
+<body>
 
-  <body>
-    <h2>Nutri+ — Perfil</h2>
+<h2>Nutri+ — Perfil</h2>
 
-    <div class="box">
-      <label>Sexo (m/f)</label>
-      <input id="sexo">
+<div class="box">
+  <label>Sexo (m/f)</label>
+  <input id="sexo">
 
-      <label>Idade</label>
-      <input id="idade" type="number">
+  <label>Idade</label>
+  <input id="idade" type="number">
 
-      <label>Peso (kg)</label>
-      <input id="peso" type="number">
+  <label>Peso (kg)</label>
+  <input id="peso" type="number">
 
-      <label>Altura (cm)</label>
-      <input id="altura" type="number">
+  <label>Altura (cm)</label>
+  <input id="altura" type="number">
 
-      <button onclick="calcular()">Calcular TMB</button>
+  <button onclick="calcular()">Calcular TMB</button>
 
-      <p><strong>TMB:</strong> <span id="resultado">—</span></p>
+  <p><strong>TMB:</strong> <span id="resultado">—</span></p>
 
-      <label>Objetivo</label>
-      <select id="objetivo">
-        <option value="manter">Manter</option>
-        <option value="emagrecer">Emagrecer</option>
-        <option value="ganhar">Ganhar Massa</option>
-      </select>
+  <label>Objetivo</label>
+  <select id="objetivo">
+    <option value="manter">Manter</option>
+    <option value="emagrecer">Emagrecer</option>
+    <option value="ganhar">Ganhar Massa</option>
+  </select>
 
-      <p><strong>Meta diária:</strong> <span id="meta">—</span></p>
-    </div>
+  <p><strong>Meta diária:</strong> <span id="meta">—</span></p>
+</div>
 
-    <h2>Refeições do dia</h2>
 
-    <div class="box">
-      <label>Alimento</label>
-      <input id="food">
+<h2>Refeições do dia</h2>
 
-      <label>Calorias</label>
-      <input id="kcal" type="number">
+<div class="box">
 
-      <label>Carboidratos (g)</label>
-      <input id="carb" type="number">
+  <label>Alimento</label>
+  <input id="food" oninput="preencherAutomatico()">
 
-      <label>Proteína (g)</label>
-      <input id="prot" type="number">
+  <label>Calorias</label>
+  <input id="kcal" type="number">
 
-      <label>Gordura (g)</label>
-      <input id="fat" type="number">
+  <label>Carboidratos (g)</label>
+  <input id="carb" type="number">
 
-      <button onclick="adicionar()">Adicionar</button>
+  <label>Proteína (g)</label>
+  <input id="prot" type="number">
 
-      <p><strong>Total do dia:</strong> <span id="total">0</span></p>
-      <p><strong>Restam:</strong> <span id="restam">0</span></p>
+  <label>Gorduras (g)</label>
+  <input id="fat" type="number">
 
-      <p><strong>Carbo:</strong> <span id="tcarb">0</span>g</p>
-      <p><strong>Proteína:</strong> <span id="tprot">0</span>g</p>
-      <p><strong>Gordura:</strong> <span id="tfat">0</span>g</p>
+  <button onclick="adicionar()">Adicionar</button>
 
-      <button onclick="limparDia()">Limpar dia</button>
+  <p><strong>Total do dia:</strong> <span id="total">0</span></p>
+  <p><strong>Restam:</strong> <span id="restam">0</span></p>
 
-      <ul id="lista"></ul>
+  <p><strong>Carboidratos:</strong> <span id="tcarb">0</span></p>
+  <p><strong>Proteína:</strong> <span id="tprot">0</span></p>
+  <p><strong>Gorduras:</strong> <span id="tfat">0</span></p>
 
-      <h3>Sugestões</h3>
-      <p id="sugestoes">—</p>
+  <button onclick="limparDia()">Limpar dia</button>
 
-      <h3>Progresso</h3>
-      <canvas id="grafico"></canvas>
-    </div>
+  <h3>Sugestões</h3>
+  <p id="sugestoes">—</p>
 
-    <script src="app.js"></script>
-  </body>
+  <ul id="lista"></ul>
+
+  <h3>Progresso</h3>
+  <canvas id="grafico" width="150" height="150"></canvas>
+
+</div>
+
+<script src="app.js"></script>
+
+</body>
 </html>
