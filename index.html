@@ -1,61 +1,98 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
-<meta charset="utf-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1" />
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
 <title>Nutri+</title>
 
-<link href="https://unpkg.com/lucide-static/font/lucide.css" rel="stylesheet"/>
+<link href="https://unpkg.com/lucide@latest/dist/umd/lucide.js" rel="script">
 
 <style>
+* { box-sizing: border-box; }
+
 body {
   margin: 0;
   font-family: Arial, sans-serif;
-  background: #0b1220;
-  color: white;
+  background: linear-gradient(180deg,#0b1220,#020617);
+  color: #fff;
+  padding-bottom: 90px; /* <<< ESSENCIAL */
 }
 
-section { display: none; padding: 16px; }
+h2,h3 { margin-top: 0; }
+
+section {
+  display: none;
+  padding: 16px;
+  animation: fade .25s ease;
+}
+
 section.active { display: block; }
 
-.card {
-  background: rgba(255,255,255,.06);
-  border-radius: 14px;
-  padding: 12px;
-  margin-bottom: 16px;
+@keyframes fade {
+  from { opacity:0; transform: translateY(6px); }
+  to { opacity:1; transform: translateY(0); }
 }
 
-/* NAV INFERIOR */
+.card {
+  background: rgba(255,255,255,.07);
+  border-radius: 16px;
+  padding: 14px;
+  margin-bottom: 16px;
+  backdrop-filter: blur(6px);
+}
+
+input, select, button {
+  width: 100%;
+  margin-bottom: 10px;
+  padding: 10px;
+  border-radius: 10px;
+  border: none;
+  font-size: 14px;
+}
+
+button {
+  background: #38bdf8;
+  color: #000;
+  font-weight: bold;
+}
+
+button.danger { background:#ef4444; color:#fff; }
+
 nav {
   position: fixed;
   bottom: 0;
   left: 0;
   right: 0;
-  background: rgba(0,0,0,.4);
-  backdrop-filter: blur(8px);
-  padding: 10px 0;
+  height: 70px;
+  background: rgba(2,6,23,.95);
+  backdrop-filter: blur(10px);
   display: flex;
   justify-content: space-around;
+  align-items: center;
+  z-index: 9999; /* <<< ESSENCIAL */
+  border-top: 1px solid rgba(255,255,255,.1);
 }
 
 nav button {
   background: none;
   border: none;
-  color: #bbb;
-  font-size: 22px;
+  color: #94a3b8;
+  font-size: 24px;
 }
 
-nav button.active { color: #4fc3f7; }
+nav button.active {
+  color: #38bdf8;
+  transform: scale(1.15);
+}
 </style>
 </head>
 
 <body>
 
-<h2 style="padding:14px">Nutri+</h2>
+<h2 style="padding:16px">🍏 Nutri+</h2>
 
 <!-- PERFIL -->
 <section id="perfil" class="active">
-
 <div class="card">
 <label>Sexo</label>
 <input id="sexo">
@@ -63,36 +100,32 @@ nav button.active { color: #4fc3f7; }
 <label>Idade</label>
 <input id="idade" type="number">
 
-<label>Peso</label>
+<label>Peso (kg)</label>
 <input id="peso" type="number">
 
-<label>Altura</label>
+<label>Altura (cm)</label>
 <input id="altura" type="number">
 
-<button onclick="calcularTMB()">Calcular</button>
+<button onclick="calcularTMB()">Calcular TMB</button>
 
-<p><strong>TMB:</strong> <span id="tmb">—</span></p>
+<p><b>TMB:</b> <span id="tmb">—</span></p>
 
 <label>Objetivo</label>
 <select id="objetivo">
- <option value="manter">Manter</option>
- <option value="emagrecer">Emagrecer</option>
- <option value="ganhar">Ganhar massa</option>
+<option value="manter">Manter</option>
+<option value="emagrecer">Emagrecer</option>
+<option value="ganhar">Ganhar massa</option>
 </select>
 
-<p><strong>Meta diária:</strong> <span id="meta">—</span></p>
-
+<p><b>Meta diária:</b> <span id="meta">—</span></p>
 </div>
-
 </section>
 
 <!-- REFEIÇÕES -->
 <section id="refeicoes">
-
-<h3>Refeições do dia</h3>
+<h3>🍽 Refeições</h3>
 
 <div class="card">
-
 <label>Buscar alimento</label>
 <input id="search" oninput="buscarAlimento()">
 
@@ -115,14 +148,24 @@ nav button.active { color: #4fc3f7; }
 
 <button onclick="adicionar()">Adicionar</button>
 
-<p><strong>Total:</strong> <span id="total">0</span></p>
-<p><strong>Restam:</strong> <span id="restam">0</span></p>
+<p><b>Total:</b> <span id="total">0</span></p>
+<p><b>Restam:</b> <span id="restam">0</span></p>
 
 <ul id="lista"></ul>
 
+<button class="danger" onclick="limparDia()">Limpar dia</button>
 </div>
-
 </section>
+
+<nav>
+<button id="btn-perfil" class="active" onclick="go('perfil')">
+<i data-lucide="user"></i>
+</button>
+
+<button id="btn-refeicoes" onclick="go('refeicoes')">
+<i data-lucide="utensils-crossed"></i>
+</button>
+</nav>
 
 <script src="app.js"></script>
 
@@ -134,17 +177,9 @@ function go(tab){
  document.querySelectorAll("nav button").forEach(b=>b.classList.remove("active"));
  document.getElementById("btn-"+tab).classList.add("active");
 }
+
+lucide.createIcons();
 </script>
-
-<nav>
- <button id="btn-perfil" class="active" onclick="go('perfil')">
-  <i class="lucide lucide-user"></i>
- </button>
-
- <button id="btn-refeicoes" onclick="go('refeicoes')">
-  <i class="lucide lucide-utensils-crossed"></i>
- </button>
-</nav>
 
 </body>
 </html>
