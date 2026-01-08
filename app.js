@@ -1,7 +1,7 @@
 const alimentos = {
-  "arroz": { kcal:130, carb:28, prot:2.7, fat:0.3 },
-  "frango": { kcal:165, carb:0, prot:31, fat:3.6 },
-  "banana": { kcal:89, carb:23, prot:1.1, fat:0.3 }
+  "arroz":   { kcal:130, carb:28, prot:2.7, fat:0.3 },
+  "frango":  { kcal:165, carb:0,  prot:31,  fat:3.6 },
+  "banana":  { kcal:89,  carb:23, prot:1.1, fat:0.3 }
 };
 
 let total = 0;
@@ -12,7 +12,7 @@ function calcular(){
   let p = +document.getElementById("peso").value;
   let a = +document.getElementById("altura").value;
 
-  let tmb = s === "f"
+  let tmb = s==="f"
     ? 447.6 + (9.2*p) + (3.1*a) - (4.3*i)
     : 88.36 + (13.4*p) + (4.8*a) - (5.7*i);
 
@@ -34,14 +34,14 @@ function buscarAlimento(){
   box.innerHTML = "";
   if(!txt) return;
 
-  Object.keys(alimentos).forEach(a=>{
-    if(a.includes(txt)){
+  Object.keys(alimentos).forEach(nome=>{
+    if(nome.includes(txt)){
       let d = document.createElement("div");
-      d.innerText = a;
-      d.onclick = ()=> {
-        document.getElementById("food").value = a;
+      d.innerText = nome;
+      d.onclick = ()=>{
+        document.getElementById("food").value = nome;
         preencherAutomatico();
-        box.innerHTML="";
+        box.innerHTML = "";
       }
       box.appendChild(d);
     }
@@ -67,8 +67,10 @@ function adicionar(){
 
   let li = document.createElement("li");
   li.className = "pulse";
-  li.innerHTML = `${document.getElementById("food").value} — ${kcal} kcal 
-    <button onclick="this.parentNode.remove()">x</button>`;
+  li.innerHTML = `
+    ${document.getElementById("food").value} — ${kcal} kcal
+    <button onclick="this.parentNode.remove()">x</button>
+  `;
 
   document.getElementById("lista").appendChild(li);
 }
