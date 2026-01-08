@@ -1,76 +1,25 @@
-// ===== BANCO GRANDE DE ALIMENTOS (por 100g / ml) =====
 const banco = {
-
-  // ================= ALIMENTOS =================
   "Arroz Branco":{cat:"Alimentos",kcal:130,carb:28,prot:2.7,fat:0.3},
-  "Arroz Integral":{cat:"Alimentos",kcal:123,carb:26,prot:2.6,fat:1},
-  "Feijão Carioca":{cat:"Alimentos",kcal:77,carb:14,prot:5,fat:0.5},
-  "Feijão Preto":{cat:"Alimentos",kcal:76,carb:14,prot:4.8,fat:0.5},
-  "Lentilha":{cat:"Alimentos",kcal:116,carb:20,prot:9,fat:0.4},
-  "Grão-de-bico":{cat:"Alimentos",kcal:164,carb:27,prot:9,fat:2.6},
-  "Macarrão":{cat:"Alimentos",kcal:131,carb:25,prot:5,fat:1.1},
-  "Macarrão Integral":{cat:"Alimentos",kcal:124,carb:26,prot:6,fat:1},
-  "Batata":{cat:"Alimentos",kcal:77,carb:17,prot:2,fat:0.1},
-  "Batata-doce":{cat:"Alimentos",kcal:86,carb:20,prot:1.6,fat:0.1},
-  "Pão Francês":{cat:"Alimentos",kcal:265,carb:49,prot:9,fat:3.2},
-  "Pão Integral":{cat:"Alimentos",kcal:247,carb:41,prot:13,fat:4.2},
-  "Aveia":{cat:"Alimentos",kcal:389,carb:66,prot:17,fat:7},
-
-  // ================= PROTEÍNAS =================
-  "Frango Grelhado":{cat:"Alimentos",kcal:165,carb:0,prot:31,fat:3.6},
-  "Carne Bovina":{cat:"Alimentos",kcal:250,carb:0,prot:26,fat:15},
-  "Carne Suína":{cat:"Alimentos",kcal:242,carb:0,prot:27,fat:14},
-  "Peixe":{cat:"Alimentos",kcal:206,carb:0,prot:22,fat:12},
-  "Atum":{cat:"Alimentos",kcal:132,carb:0,prot:29,fat:1},
-  "Ovo":{cat:"Alimentos",kcal:155,carb:1.1,prot:13,fat:11},
-
-  // ================= FRUTAS =================
+  "Feijão":{cat:"Alimentos",kcal:77,carb:14,prot:5,fat:0.5},
+  "Frango":{cat:"Alimentos",kcal:165,carb:0,prot:31,fat:3.6},
   "Banana":{cat:"Alimentos",kcal:89,carb:23,prot:1.1,fat:0.3},
-  "Maçã":{cat:"Alimentos",kcal:52,carb:14,prot:0.3,fat:0.2},
-  "Laranja":{cat:"Alimentos",kcal:47,carb:12,prot:0.9,fat:0.1},
-  "Manga":{cat:"Alimentos",kcal:60,carb:15,prot:0.8,fat:0.4},
-  "Mamão":{cat:"Alimentos",kcal:43,carb:11,prot:0.5,fat:0.3},
-  "Abacate":{cat:"Alimentos",kcal:160,carb:9,prot:2,fat:15},
 
-  // ================= LEGUMES =================
-  "Brócolis":{cat:"Alimentos",kcal:34,carb:7,prot:2.8,fat:0.4},
-  "Cenoura":{cat:"Alimentos",kcal:41,carb:10,prot:0.9,fat:0.2},
-  "Tomate":{cat:"Alimentos",kcal:18,carb:3.9,prot:0.9,fat:0.2},
-  "Alface":{cat:"Alimentos",kcal:15,carb:2.9,prot:1.4,fat:0.2},
-
-  // ================= BEBIDAS =================
   "Refrigerante":{cat:"Bebidas",kcal:42,carb:11,prot:0,fat:0},
-  "Suco de Laranja":{cat:"Bebidas",kcal:45,carb:10,prot:0.7,fat:0.2},
-  "Suco de Uva":{cat:"Bebidas",kcal:60,carb:14,prot:0.3,fat:0.1},
-  "Leite Integral":{cat:"Bebidas",kcal:61,carb:5,prot:3.2,fat:3.3},
-  "Leite Desnatado":{cat:"Bebidas",kcal:34,carb:5,prot:3.4,fat:0.1},
-
-  // ================= BEBIDAS ZERO =================
   "Refrigerante Zero":{cat:"Bebidas Zero",kcal:0,carb:0,prot:0,fat:0},
-  "Chá Sem Açúcar":{cat:"Bebidas Zero",kcal:0,carb:0,prot:0,fat:0},
-  "Café Sem Açúcar":{cat:"Bebidas Zero",kcal:0,carb:0,prot:0,fat:0},
-
-  // ================= ALCOÓLICAS =================
   "Cerveja":{cat:"Bebidas",kcal:43,carb:3.6,prot:0.5,fat:0},
   "Cerveja 0.0":{cat:"Bebidas Zero",kcal:14,carb:3,prot:0.2,fat:0},
-  "Vinho Tinto":{cat:"Bebidas",kcal:85,carb:2.6,prot:0.1,fat:0},
-  "Vinho Branco":{cat:"Bebidas",kcal:82,carb:2.6,prot:0.1,fat:0},
 
-  // ================= SUPLEMENTOS =================
   "Whey Protein":{cat:"Suplementos",kcal:400,carb:8,prot:80,fat:6},
-  "Whey Isolado":{cat:"Suplementos",kcal:360,carb:3,prot:85,fat:2},
-  "Creatina":{cat:"Suplementos",kcal:0,carb:0,prot:0,fat:0},
-  "BCAA":{cat:"Suplementos",kcal:240,carb:0,prot:60,fat:0},
-  "Hipercalórico":{cat:"Suplementos",kcal:380,carb:70,prot:20,fat:6}
+  "Creatina":{cat:"Suplementos",kcal:0,carb:0,prot:0,fat:0}
 };
 
-// ===== ESTADO =====
 let user=null;
 let selecionado=null;
-let total={kcal:0,carb:0,prot:0,fat:0};
 let metaDiaria=0;
+let total={kcal:0,carb:0,prot:0,fat:0};
+let historico=[];
 
-// ===== LOGIN =====
+// LOGIN
 function login(){
   if(!username.value) return alert("Digite seu nome");
   user=username.value;
@@ -79,15 +28,16 @@ function login(){
   go("perfil");
 }
 
-// ===== NAVEGAÇÃO =====
+// NAV
 function go(id){
   document.querySelectorAll("section").forEach(s=>s.classList.remove("active"));
   document.getElementById(id).classList.add("active");
   document.querySelectorAll("nav button").forEach(b=>b.classList.remove("active"));
   document.getElementById("btn-"+id).classList.add("active");
+  if(id==="historico") carregarCalendario();
 }
 
-// ===== TMB =====
+// TMB
 function calcularTMB(){
   const s=sexo.value,i=+idade.value,p=+peso.value,a=+altura.value,o=objetivo.value;
   let tmb=s==="m"
@@ -99,7 +49,7 @@ function calcularTMB(){
   atualizarRestante();
 }
 
-// ===== AUTOCOMPLETE =====
+// AUTOCOMPLETE
 function autocomplete(){
   auto.innerHTML="";
   const termo=search.value.toLowerCase();
@@ -113,7 +63,7 @@ function autocomplete(){
     });
 }
 
-// ===== FILTRO CATEGORIA =====
+// FILTRO
 function filtrarCategoria(){
   auto.innerHTML="";
   const c=categoria.value;
@@ -127,7 +77,7 @@ function filtrarCategoria(){
     });
 }
 
-// ===== ADICIONAR =====
+// ADICIONAR
 function adicionar(){
   if(!selecionado) return alert("Selecione um item");
   const g=+gramas.value;
@@ -143,20 +93,76 @@ function adicionar(){
   totalCarb.textContent=total.carb.toFixed(1);
   totalProt.textContent=total.prot.toFixed(1);
   totalFat.textContent=total.fat.toFixed(1);
+
   atualizarRestante();
+  historico.push(total.kcal);
+  desenharGrafico();
+  salvarDia();
 
   const li=document.createElement("li");
   li.textContent=`${g}g/ml ${selecionado}`;
   lista.appendChild(li);
 }
 
-// ===== RESTANTE =====
-function atualizarRestante(){
-  restante.textContent=metaDiaria
-    ? Math.round(metaDiaria-total.kcal)
-    : "—";
+// GRÁFICO
+function desenharGrafico(){
+  const ctx=grafico.getContext("2d");
+  ctx.clearRect(0,0,grafico.width,grafico.height);
+  ctx.beginPath();
+  historico.forEach((v,i)=>{
+    ctx.lineTo(i*30+10,100-v/10);
+  });
+  ctx.strokeStyle="#38bdf8";
+  ctx.stroke();
 }
 
-// ===== AUTO LOGIN =====
+// RESTANTE
+function atualizarRestante(){
+  restante.textContent=metaDiaria?Math.round(metaDiaria-total.kcal):"—";
+}
+
+// LIMPAR
+function limparDia(){
+  total={kcal:0,carb:0,prot:0,fat:0};
+  historico=[];
+  lista.innerHTML="";
+  totalKcal.textContent=0;
+  totalCarb.textContent=0;
+  totalProt.textContent=0;
+  totalFat.textContent=0;
+  restante.textContent=metaDiaria||"—";
+  grafico.getContext("2d").clearRect(0,0,grafico.width,grafico.height);
+  salvarDia();
+}
+
+// HISTÓRICO CALENDÁRIO
+function carregarCalendario(){
+  calendar.innerHTML="";
+  const hoje=new Date();
+  const dias=new Date(hoje.getFullYear(),hoje.getMonth()+1,0).getDate();
+  for(let d=1;d<=dias;d++){
+    const dia=document.createElement("div");
+    dia.textContent=d;
+    const data=`${hoje.getFullYear()}-${String(hoje.getMonth()+1).padStart(2,"0")}-${String(d).padStart(2,"0")}`;
+    const key=`nutri_${user}_${data}`;
+    if(localStorage.getItem(key)) dia.classList.add("active");
+    dia.onclick=()=>{
+      const dados=JSON.parse(localStorage.getItem(key)||"null");
+      histInfo.textContent=dados
+        ? `🔥 ${Math.round(dados.kcal)} kcal`
+        : "Sem dados";
+    };
+    calendar.appendChild(dia);
+  }
+}
+
+// SALVAR DIA
+function salvarDia(){
+  if(!user) return;
+  const hoje=new Date().toISOString().slice(0,10);
+  localStorage.setItem(`nutri_${user}_${hoje}`,JSON.stringify(total));
+}
+
+// AUTO LOGIN
 const u=localStorage.getItem("nutri_user");
 if(u){user=u;userLabel.textContent=user;go("perfil");}
