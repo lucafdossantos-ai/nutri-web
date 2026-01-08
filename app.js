@@ -27,23 +27,17 @@ const TABELA = {
   "macarrao": { kcal: 131, carb: 25, prot: 5, fat: 1.1 },
   "pizza": { kcal: 266, carb: 33, prot: 11, fat: 10 },
 
-  // doces
-  "chocolate": { kcal: 546, carb: 61, prot: 4.9, fat: 31 },
-  "biscoito": { kcal: 502, carb: 67, prot: 6, fat: 24 },
-
   // legumes
   "batata": { kcal: 77, carb: 17, prot: 2, fat: 0.1 },
   "cenoura": { kcal: 41, carb: 10, prot: 0.9, fat: 0.2 },
   "brocolis": { kcal: 34, carb: 7, prot: 2.8, fat: 0.4 },
 };
 
-
 // ===============================
-// DADOS SALVOS
+// ESTADO SALVO
 // ===============================
 let total = Number(localStorage.getItem("total")) || 0;
 let lista = JSON.parse(localStorage.getItem("lista")) || [];
-
 let macros = JSON.parse(localStorage.getItem("macros")) || {
   carb: 0,
   prot: 0,
@@ -54,7 +48,7 @@ atualizarTela();
 
 
 // ===============================
-// PERFIL
+// PERFIL / TMB
 // ===============================
 function calcular() {
   const sexo = document.getElementById("sexo").value;
@@ -77,7 +71,6 @@ function calcular() {
   }
 
   let meta = tmb;
-
   if (objetivo === "emagrecer") meta -= 400;
   if (objetivo === "ganhar") meta += 300;
 
@@ -93,12 +86,12 @@ function calcular() {
 
 
 // ===============================
-// PREENCHER AUTOMÁTICO
+// PREENCHER AUTOMÁTICO (100g arroz)
 // ===============================
 function preencherAutomatico() {
   const texto = document.getElementById("food").value.toLowerCase();
 
-  // pega número antes do "g"
+  // captura número antes do "g" (EXATO!)
   const match = texto.match(/(\d+)\s*g/);
   if (!match) return;
 
@@ -119,6 +112,39 @@ function preencherAutomatico() {
   document.getElementById("carb").value = Math.round(dados.carb * fator);
   document.getElementById("prot").value = Math.round(dados.prot * fator);
   document.getElementById("fat").value = Math.round(dados.fat * fator);
+}
+
+
+// ===============================
+// BUSCAR ALIMENTO (autocomplete)
+// ===============================
+function buscarAlimento() {
+  const q = document.getElementById("search").value.toLowerCase();
+  const results = document.getElementById("results");
+
+  if (!q) {
+    results.style.display = "none";
+    results.innerHTML = "";
+    return;
+  }
+
+  const filtrados = Object.keys(TABELA).filter(n => n.includes(q));
+
+  results.innerHTML = "";
+
+  filtrados.forEach(nome => {
+    const div = document.createElement("div");
+    div.innerText = nome;
+    div.onclick = () => {
+      document.getElementById("food").value = `100g ${nome}`;
+      preencherAutomatico();
+      results.style.display = "none";
+      document.getElementById("search").value = "";
+    };
+    results.appendChild(div);
+  });
+
+  results.style.display = filtrados.length ? "block" : "none";
 }
 
 
@@ -147,11 +173,35 @@ function adicionar() {
 
   salvar();
   atualizarTela();
+
+  document.getElementById("food").value = "";
+  document.getElementById("kcal").value = "";
+  document.getElementById("carb").value = "";
+  document.getElementById("prot").value = "";
+  document.getElementById("fat").value = "";
 }
 
 
 // ===============================
-// ATUALIZAR INTERFACE
+// EXCLUIR REFEIÇÃO
+// ===============================
+function excluir(index) {
+  const item = lista[index];
+
+  total -= item.kcal;
+  macros.carb -= item.carb;
+  macros.prot -= item.prot;
+  macros.fat -= item.fat;
+
+  lista.splice(index, 1);
+
+  salvar();
+  atualizarTela();
+}
+
+
+// ===============================
+// ATUALIZAR UI
 // ===============================
 function atualizarTela() {
   document.getElementById("total").innerText = total;
@@ -166,11 +216,19 @@ function atualizarTela() {
   const ul = document.getElementById("lista");
   ul.innerHTML = "";
 
-  lista.forEach(item => {
+  lista.forEach((item, i) => {
     const li = document.createElement("li");
-    li.innerText = `${item.food} — ${item.kcal} kcal`;
+    li.className = "meal-item fade";
+    li.innerHTML = `
+      <span>${item.food} — ${item.kcal} kcal</span>
+      <button onclick="excluir(${i})">
+        <i data-lucide="x"></i>
+      </button>
+    `;
     ul.appendChild(li);
   });
+
+  if (window.lucide) lucide.createIcons();
 
   sugerir();
   desenharGrafico();
@@ -188,7 +246,7 @@ function salvar() {
 
 
 // ===============================
-// LIMPAR
+// LIMPAR DIA
 // ===============================
 function limparDia() {
   total = 0;
@@ -225,7 +283,6 @@ function desenharGrafico() {
   if (!canvas) return;
 
   const ctx = canvas.getContext("2d");
-
   const meta = Number(localStorage.getItem("meta")) || 0;
 
   ctx.clearRect(0, 0, canvas.width, canvas.height);
@@ -233,7 +290,7 @@ function desenharGrafico() {
   ctx.fillStyle = "#1f2937";
   ctx.fillRect(0, 0, canvas.width, canvas.height);
 
-  ctx.fillStyle = "#2563eb";
+  ctx.fillStyle = "#4f8cff";
   const h = (total / (meta || 1)) * canvas.height;
   ctx.fillRect(20, canvas.height - h, 60, h);
 }
