@@ -37,6 +37,7 @@ const TABELA = {
   "brocolis": { kcal: 34, carb: 7, prot: 2.8, fat: 0.4 },
 };
 
+
 // ===============================
 // DADOS SALVOS
 // ===============================
@@ -50,6 +51,7 @@ let macros = JSON.parse(localStorage.getItem("macros")) || {
 };
 
 atualizarTela();
+
 
 // ===============================
 // PERFIL
@@ -75,6 +77,7 @@ function calcular() {
   }
 
   let meta = tmb;
+
   if (objetivo === "emagrecer") meta -= 400;
   if (objetivo === "ganhar") meta += 300;
 
@@ -88,13 +91,15 @@ function calcular() {
   desenharGrafico();
 }
 
+
 // ===============================
-// PREENCHER AUTOMATICO (100g arroz…)
+// PREENCHER AUTOMÁTICO
 // ===============================
 function preencherAutomatico() {
   const texto = document.getElementById("food").value.toLowerCase();
 
-  const match = texto.match(/(\\d+)\\s*g/);
+  // pega número antes do "g"
+  const match = texto.match(/(\d+)\s*g/);
   if (!match) return;
 
   const quantidade = Number(match[1]);
@@ -115,6 +120,7 @@ function preencherAutomatico() {
   document.getElementById("prot").value = Math.round(dados.prot * fator);
   document.getElementById("fat").value = Math.round(dados.fat * fator);
 }
+
 
 // ===============================
 // ADICIONAR REFEIÇÃO
@@ -143,6 +149,7 @@ function adicionar() {
   atualizarTela();
 }
 
+
 // ===============================
 // ATUALIZAR INTERFACE
 // ===============================
@@ -169,6 +176,7 @@ function atualizarTela() {
   desenharGrafico();
 }
 
+
 // ===============================
 // SALVAR
 // ===============================
@@ -177,6 +185,7 @@ function salvar() {
   localStorage.setItem("lista", JSON.stringify(lista));
   localStorage.setItem("macros", JSON.stringify(macros));
 }
+
 
 // ===============================
 // LIMPAR
@@ -189,6 +198,7 @@ function limparDia() {
   salvar();
   atualizarTela();
 }
+
 
 // ===============================
 // SUGESTÕES
@@ -206,11 +216,14 @@ function sugerir() {
   document.getElementById("sugestoes").innerText = texto;
 }
 
+
 // ===============================
 // GRÁFICO
 // ===============================
 function desenharGrafico() {
   const canvas = document.getElementById("grafico");
+  if (!canvas) return;
+
   const ctx = canvas.getContext("2d");
 
   const meta = Number(localStorage.getItem("meta")) || 0;
