@@ -13,7 +13,6 @@
   --text:#fff;
   --muted:#9aa4bf;
   --primary:#38bdf8;
-  --danger:#ef4444;
 }
 body.light{
   --bg:#f4f6fb;
@@ -62,18 +61,7 @@ button{
   background:var(--primary);
   font-weight:600;
 }
-button.danger{background:var(--danger);color:#fff}
-ul{list-style:none;padding:0}
-li{
-  background:rgba(255,255,255,.06);
-  padding:12px;
-  border-radius:12px;
-  margin-top:10px;
-}
 .small{font-size:13px;color:var(--muted)}
-canvas{display:block;margin:20px auto}
-
-/* autocomplete */
 .autocomplete{
   background:rgba(0,0,0,.35);
   border-radius:12px;
@@ -86,7 +74,7 @@ canvas{display:block;margin:20px auto}
 .autocomplete div:hover{
   background:rgba(255,255,255,.08);
 }
-
+canvas{display:block;margin:20px auto}
 nav{
   position:fixed;
   bottom:0;
@@ -101,7 +89,6 @@ nav{
 nav button{
   background:none;
   color:var(--muted);
-  width:auto;
 }
 nav button.active{color:var(--primary)}
 </style>
@@ -125,40 +112,6 @@ nav button.active{color:var(--primary)}
   </div>
 </section>
 
-<!-- PERFIL -->
-<section id="perfil">
-  <div class="card">
-    <p>👤 <strong id="userLabel"></strong></p>
-
-    <label>Sexo</label>
-    <select id="sexo">
-      <option value="m">Masculino</option>
-      <option value="f">Feminino</option>
-    </select>
-
-    <label>Idade</label>
-    <input id="idade" type="number">
-
-    <label>Peso (kg)</label>
-    <input id="peso" type="number">
-
-    <label>Altura (cm)</label>
-    <input id="altura" type="number">
-
-    <label>Objetivo</label>
-    <select id="objetivo">
-      <option value="manter">Manter</option>
-      <option value="emagrecer">Emagrecer</option>
-      <option value="ganhar">Ganhar massa</option>
-    </select>
-
-    <button onclick="calcularTMB()">Calcular TMB</button>
-
-    <p>TMB: <strong><span id="tmb">—</span></strong></p>
-    <p>Meta diária: <strong><span id="meta">—</span></strong></p>
-  </div>
-</section>
-
 <!-- REFEIÇÕES -->
 <section id="refeicoes">
   <div class="card">
@@ -166,10 +119,13 @@ nav button.active{color:var(--primary)}
     <label>Categoria</label>
     <select id="categoria" onchange="filtrarCategoria()">
       <option value="todos">Todos</option>
-      <option value="carbo">Carboidratos</option>
+      <option value="massa">Massas</option>
+      <option value="grao">Grãos</option>
       <option value="proteina">Proteínas</option>
       <option value="fruta">Frutas</option>
       <option value="legume">Legumes</option>
+      <option value="bebida">Bebidas</option>
+      <option value="zero">Bebidas Zero</option>
       <option value="laticinio">Laticínios</option>
     </select>
 
@@ -177,31 +133,31 @@ nav button.active{color:var(--primary)}
     <input id="search" oninput="autocomplete()">
     <div id="auto" class="autocomplete"></div>
 
-    <label>Quantidade (g)</label>
+    <label>Quantidade (g / ml)</label>
     <input id="gramas" type="number" value="100">
 
     <button onclick="adicionar()">Adicionar</button>
 
     <p>🔥 <strong><span id="totalKcal">0</span></strong> kcal</p>
-    <p class="small">Restam: <strong><span id="restante">—</span></strong> kcal</p>
 
-    <p>🍞 <span id="totalCarb">0</span> g | 🥩 <span id="totalProt">0</span> g | 🧈 <span id="totalFat">0</span> g</p>
-
-    <canvas id="grafico" width="200" height="200"></canvas>
+    <canvas id="grafico" width="220" height="220"></canvas>
 
     <ul id="lista"></ul>
+  </div>
+</section>
 
-    <button class="danger" onclick="limpar()">Limpar dia</button>
+<!-- HISTÓRICO -->
+<section id="historico">
+  <div class="card">
+    <h3>📅 Histórico</h3>
+    <div id="calendar" style="display:grid;grid-template-columns:repeat(7,1fr);gap:6px"></div>
+    <p class="small" id="histInfo">Selecione um dia</p>
   </div>
 </section>
 
 <nav>
-  <button onclick="go('perfil')" id="btn-perfil">
-    <i data-lucide="user"></i>
-  </button>
-  <button onclick="go('refeicoes')" id="btn-refeicoes">
-    <i data-lucide="utensils-crossed"></i>
-  </button>
+  <button onclick="go('refeicoes')" id="btn-refeicoes"><i data-lucide="utensils"></i></button>
+  <button onclick="go('historico')" id="btn-historico"><i data-lucide="calendar"></i></button>
 </nav>
 
 <script src="app.js"></script>
