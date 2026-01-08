@@ -1,21 +1,16 @@
-<!DOCTYPE html>
-<html lang="pt-BR">
-<head>
-<meta charset="utf-8" />
-<title>Nutri+ Web</title>
-
-<!-- ÍCONES -->
-<script src="https://unpkg.com/lucide@latest"></script>
-
 <style>
   :root {
-    --bg: #0b1220;
-    --panel: #10182b;
-    --border: #1e2a44;
+    --bg: linear-gradient(180deg, #0f172a, #020617);
+    --panel: rgba(17, 25, 40, .7);
+    --border: rgba(255, 255, 255, .1);
     --text: #e5e7eb;
     --muted: #9ca3af;
-    --primary: #4f8cff;
+    --primary: #60a5fa;
     --danger: #ef4444;
+  }
+
+  * {
+    box-sizing: border-box;
   }
 
   body {
@@ -23,6 +18,7 @@
     padding: 16px;
     background: var(--bg);
     color: var(--text);
+    min-height: 100vh;
   }
 
   .fade { animation: fade .35s ease; }
@@ -32,24 +28,36 @@
     to   { opacity: 1; transform: translateY(0); }
   }
 
-  h1 { margin-bottom: 6px; display:flex; align-items:center; gap:6px; }
-
-  h2 {
-    margin-top: 18px;
-    margin-bottom: 10px;
-    font-size: 20px;
+  header {
     display:flex;
     align-items:center;
+    justify-content:space-between;
+    margin-bottom: 14px;
+  }
+
+  header h1 {
+    display:flex;
     gap:8px;
+    align-items:center;
+    margin:0;
+  }
+
+  .chip {
+    padding:6px 10px;
+    border-radius: 999px;
+    border:1px solid var(--border);
+    background: rgba(255,255,255,.06);
+    font-size: 12px;
   }
 
   .box {
     border: 1px solid var(--border);
     padding: 14px;
-    margin-top: 12px;
-    border-radius: 14px;
+    margin-top: 14px;
+    border-radius: 18px;
     background: var(--panel);
-    box-shadow: 0 15px 35px rgb(0 0 0 / 0.25);
+    box-shadow: 0 25px 40px rgb(0 0 0 / .25);
+    backdrop-filter: blur(16px);
   }
 
   label {
@@ -59,12 +67,12 @@
 
   input, select {
     width: 100%;
-    padding: 10px;
+    padding: 12px;
     margin-top: 6px;
     margin-bottom: 14px;
-    border-radius: 10px;
+    border-radius: 12px;
     border: 1px solid var(--border);
-    background: #0a0f1b;
+    background: rgba(0,0,0,.4);
     color: var(--text);
     transition: border .2s, transform .1s;
   }
@@ -76,8 +84,8 @@
   }
 
   button {
-    padding: 10px 14px;
-    border-radius: 10px;
+    padding: 11px 14px;
+    border-radius: 12px;
     border: none;
     background: var(--primary);
     color: white;
@@ -86,166 +94,56 @@
     display:inline-flex;
     align-items:center;
     gap:6px;
-    transition: transform .12s, opacity .15s;
+    transition: transform .12s, opacity .15s, box-shadow .15s;
+    box-shadow: 0 10px 20px rgba(96,165,250,.25);
   }
 
-  button:active { transform: scale(.96); opacity: .75; }
+  button:active { transform: scale(.96); opacity: .8; }
+  button.danger { background: var(--danger); box-shadow:0 10px 18px rgba(239,68,68,.25); }
 
-  button.danger { background: var(--danger); }
-
-  /* lista de refeições */
   .meal-item {
     display:flex;
     justify-content:space-between;
     align-items:center;
-    padding:6px 0;
-    border-bottom:1px solid #18243d;
+    padding:10px 0;
+    border-bottom:1px solid rgba(255,255,255,.08);
   }
 
   .meal-item button {
-    background:#243b74;
-    padding:6px 8px;
+    background: rgba(255,255,255,.08);
+    box-shadow:none;
   }
 
-  .search-box {
-    position:relative;
-  }
+  .search-box { position:relative; }
 
   .search-results {
     position:absolute;
     top:100%;
     left:0;
     right:0;
-    background:#0f172a;
+    background: rgba(10,15,30,.95);
     border:1px solid var(--border);
-    border-radius:10px;
+    border-radius:14px;
     margin-top:4px;
-    max-height:180px;
+    max-height:200px;
     overflow-y:auto;
     display:none;
     z-index:5;
   }
 
   .search-results div {
-    padding:8px 10px;
+    padding:10px 12px;
     cursor:pointer;
   }
 
   .search-results div:hover {
-    background:#1e293b;
+    background: rgba(255,255,255,.06);
   }
 
   canvas {
-    margin-top: 12px;
-    border-radius: 10px;
+    margin-top: 14px;
+    border-radius: 14px;
     border: 1px solid var(--border);
-    background: #020617;
+    background: rgba(0,0,0,.35);
   }
 </style>
-</head>
-
-<body class="fade">
-
-<h1>
-  <i data-lucide="apple"></i>
-  Nutri+
-</h1>
-
-<p style="color:#9ca3af; margin-top:0;">
-  Seu controle diário — simples e inteligente.
-</p>
-
-<h2><i data-lucide="user"></i> Perfil</h2>
-
-<div class="box fade">
-  <label>Sexo (m/f)</label>
-  <input id="sexo">
-
-  <label>Idade</label>
-  <input id="idade" type="number">
-
-  <label>Peso (kg)</label>
-  <input id="peso" type="number">
-
-  <label>Altura (cm)</label>
-  <input id="altura" type="number">
-
-  <button onclick="calcular()">
-    <i data-lucide="activity"></i>
-    Calcular TMB
-  </button>
-
-  <p><strong>TMB:</strong> <span id="resultado">—</span></p>
-
-  <label>Objetivo</label>
-  <select id="objetivo">
-    <option value="manter">Manter</option>
-    <option value="emagrecer">Emagrecer</option>
-    <option value="ganhar">Ganhar Massa</option>
-  </select>
-
-  <p><strong>Meta diária:</strong> <span id="meta">—</span></p>
-</div>
-
-
-<h2><i data-lucide="utensils-crossed"></i> Refeições do dia</h2>
-
-<div class="box fade">
-
-  <!-- BUSCAR ALIMENTOS -->
-  <label>Buscar alimento</label>
-  <div class="search-box">
-    <input id="search" oninput="buscarAlimento()" placeholder="Ex: arroz, frango, banana…">
-    <div id="results" class="search-results"></div>
-  </div>
-
-  <label>Alimento</label>
-  <input id="food" oninput="preencherAutomatico()">
-
-  <label>Calorias</label>
-  <input id="kcal" type="number">
-
-  <label>Carboidratos (g)</label>
-  <input id="carb" type="number">
-
-  <label>Proteína (g)</label>
-  <input id="prot" type="number">
-
-  <label>Gorduras (g)</label>
-  <input id="fat" type="number">
-
-  <button onclick="adicionar()">
-    <i data-lucide="plus"></i>
-    Adicionar
-  </button>
-
-  <p><strong>Total do dia:</strong> <span id="total">0</span></p>
-  <p><strong>Restam:</strong> <span id="restam">0</span></p>
-
-  <p><strong>Carboidratos:</strong> <span id="tcarb">0</span></p>
-  <p><strong>Proteína:</strong> <span id="tprot">0</span></p>
-  <p><strong>Gorduras:</strong> <span id="tfat">0</span></p>
-
-  <button class="danger" onclick="limparDia()">
-    <i data-lucide="trash-2"></i>
-    Limpar dia
-  </button>
-
-  <h3>Sugestões</h3>
-  <p id="sugestoes">—</p>
-
-  <ul id="lista"></ul>
-
-  <h3>Progresso</h3>
-  <canvas id="grafico" width="150" height="150"></canvas>
-
-</div>
-
-<script src="app.js"></script>
-
-<script>
-  lucide.createIcons();
-</script>
-
-</body>
-</html>
