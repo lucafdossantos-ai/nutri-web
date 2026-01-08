@@ -1,185 +1,237 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
-<meta charset="UTF-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1.0" />
-<title>Nutri+</title>
+  <meta charset="UTF-8" />
+  <title>Nutri+</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
-<link href="https://unpkg.com/lucide@latest/dist/umd/lucide.js" rel="script">
+  <!-- Ícones -->
+  <script src="https://unpkg.com/lucide@latest"></script>
 
-<style>
-* { box-sizing: border-box; }
+  <style>
+    :root {
+      --bg: #0b1220;
+      --card: #141c2f;
+      --text: #ffffff;
+      --muted: #9aa4bf;
+      --primary: #38bdf8;
+      --danger: #ef4444;
+    }
 
-body {
-  margin: 0;
-  font-family: Arial, sans-serif;
-  background: linear-gradient(180deg,#0b1220,#020617);
-  color: #fff;
-  padding-bottom: 90px; /* <<< ESSENCIAL */
-}
+    body.light {
+      --bg: #f4f6fb;
+      --card: #ffffff;
+      --text: #111827;
+      --muted: #6b7280;
+    }
 
-h2,h3 { margin-top: 0; }
+    * { box-sizing: border-box; }
 
-section {
-  display: none;
-  padding: 16px;
-  animation: fade .25s ease;
-}
+    body {
+      margin: 0;
+      font-family: system-ui, -apple-system, BlinkMacSystemFont;
+      background: var(--bg);
+      color: var(--text);
+      padding-bottom: 80px;
+      transition: background 0.3s, color 0.3s;
+    }
 
-section.active { display: block; }
+    header {
+      padding: 20px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
 
-@keyframes fade {
-  from { opacity:0; transform: translateY(6px); }
-  to { opacity:1; transform: translateY(0); }
-}
+    h1 {
+      margin: 0;
+      font-size: 24px;
+    }
 
-.card {
-  background: rgba(255,255,255,.07);
-  border-radius: 16px;
-  padding: 14px;
-  margin-bottom: 16px;
-  backdrop-filter: blur(6px);
-}
+    section {
+      display: none;
+      padding: 20px;
+      animation: fade 0.3s ease;
+    }
 
-input, select, button {
-  width: 100%;
-  margin-bottom: 10px;
-  padding: 10px;
-  border-radius: 10px;
-  border: none;
-  font-size: 14px;
-}
+    section.active {
+      display: block;
+    }
 
-button {
-  background: #38bdf8;
-  color: #000;
-  font-weight: bold;
-}
+    @keyframes fade {
+      from { opacity: 0; transform: translateY(8px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
 
-button.danger { background:#ef4444; color:#fff; }
+    .card {
+      background: var(--card);
+      border-radius: 16px;
+      padding: 16px;
+      margin-bottom: 16px;
+      box-shadow: 0 10px 30px rgba(0,0,0,.25);
+    }
 
-nav {
-  position: fixed;
-  bottom: 0;
-  left: 0;
-  right: 0;
-  height: 70px;
-  background: rgba(2,6,23,.95);
-  backdrop-filter: blur(10px);
-  display: flex;
-  justify-content: space-around;
-  align-items: center;
-  z-index: 9999; /* <<< ESSENCIAL */
-  border-top: 1px solid rgba(255,255,255,.1);
-}
+    label {
+      font-size: 14px;
+      color: var(--muted);
+      display: block;
+      margin-top: 12px;
+    }
 
-nav button {
-  background: none;
-  border: none;
-  color: #94a3b8;
-  font-size: 24px;
-}
+    input, select {
+      width: 100%;
+      padding: 12px;
+      margin-top: 6px;
+      border-radius: 12px;
+      border: none;
+      outline: none;
+      background: rgba(255,255,255,.08);
+      color: var(--text);
+      font-size: 15px;
+    }
 
-nav button.active {
-  color: #38bdf8;
-  transform: scale(1.15);
-}
-</style>
+    body.light input, body.light select {
+      background: #eef1f7;
+    }
+
+    button {
+      width: 100%;
+      padding: 14px;
+      margin-top: 16px;
+      border-radius: 14px;
+      border: none;
+      font-size: 16px;
+      cursor: pointer;
+      background: var(--primary);
+      color: #000;
+      font-weight: 600;
+    }
+
+    button.danger {
+      background: var(--danger);
+      color: #fff;
+    }
+
+    .small {
+      font-size: 14px;
+      margin-top: 10px;
+    }
+
+    ul {
+      list-style: none;
+      padding: 0;
+      margin: 0;
+    }
+
+    li {
+      background: rgba(255,255,255,.06);
+      border-radius: 12px;
+      padding: 12px;
+      margin-top: 10px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      animation: fade 0.3s ease;
+    }
+
+    nav {
+      position: fixed;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      height: 64px;
+      background: var(--card);
+      display: flex;
+      justify-content: space-around;
+      align-items: center;
+      box-shadow: 0 -10px 30px rgba(0,0,0,.3);
+    }
+
+    nav button {
+      background: none;
+      color: var(--muted);
+      width: auto;
+      padding: 8px;
+    }
+
+    nav button.active {
+      color: var(--primary);
+    }
+  </style>
 </head>
 
 <body>
 
-<h2 style="padding:16px">🍏 Nutri+</h2>
+<header>
+  <h1>🍏 Nutri+</h1>
+  <button onclick="toggleTheme()" style="width:auto">
+    <i data-lucide="sun"></i>
+  </button>
+</header>
 
 <!-- PERFIL -->
 <section id="perfil" class="active">
-<div class="card">
-<label>Sexo</label>
-<input id="sexo">
+  <div class="card">
+    <label>Sexo</label>
+    <select id="sexo">
+      <option value="m">Masculino</option>
+      <option value="f">Feminino</option>
+    </select>
 
-<label>Idade</label>
-<input id="idade" type="number">
+    <label>Idade</label>
+    <input id="idade" type="number">
 
-<label>Peso (kg)</label>
-<input id="peso" type="number">
+    <label>Peso (kg)</label>
+    <input id="peso" type="number">
 
-<label>Altura (cm)</label>
-<input id="altura" type="number">
+    <label>Altura (cm)</label>
+    <input id="altura" type="number">
 
-<button onclick="calcularTMB()">Calcular TMB</button>
+    <label>Objetivo</label>
+    <select id="objetivo">
+      <option value="manter">Manter</option>
+      <option value="emagrecer">Emagrecer</option>
+      <option value="ganhar">Ganhar massa</option>
+    </select>
 
-<p><b>TMB:</b> <span id="tmb">—</span></p>
+    <button onclick="calcularTMB()">Calcular TMB</button>
 
-<label>Objetivo</label>
-<select id="objetivo">
-<option value="manter">Manter</option>
-<option value="emagrecer">Emagrecer</option>
-<option value="ganhar">Ganhar massa</option>
-</select>
-
-<p><b>Meta diária:</b> <span id="meta">—</span></p>
-</div>
+    <p class="small">TMB: <strong><span id="tmb">—</span></strong></p>
+    <p class="small">Meta diária: <strong><span id="meta">—</span></strong></p>
+  </div>
 </section>
 
 <!-- REFEIÇÕES -->
 <section id="refeicoes">
-<h3>🍽 Refeições</h3>
+  <div class="card">
+    <label>Buscar alimento</label>
+    <input id="food" placeholder="Ex: arroz, frango, banana">
 
-<div class="card">
-<label>Buscar alimento</label>
-<input id="search" oninput="buscarAlimento()">
+    <label>Quantidade (g)</label>
+    <input id="gramas" type="number" value="100">
 
-<div id="results"></div>
+    <button onclick="adicionar()">Adicionar refeição</button>
 
-<label>Alimento</label>
-<input id="food" oninput="preencherAutomatico()">
+    <p class="small">Total do dia: <strong><span id="total">0</span></strong> kcal</p>
 
-<label>Calorias</label>
-<input id="kcal" type="number">
+    <ul id="lista"></ul>
 
-<label>Carboidratos</label>
-<input id="carb" type="number">
-
-<label>Proteína</label>
-<input id="prot" type="number">
-
-<label>Gorduras</label>
-<input id="fat" type="number">
-
-<button onclick="adicionar()">Adicionar</button>
-
-<p><b>Total:</b> <span id="total">0</span></p>
-<p><b>Restam:</b> <span id="restam">0</span></p>
-
-<ul id="lista"></ul>
-
-<button class="danger" onclick="limparDia()">Limpar dia</button>
-</div>
+    <button class="danger" onclick="limpar()">Limpar dia</button>
+  </div>
 </section>
 
+<!-- NAV -->
 <nav>
-<button id="btn-perfil" class="active" onclick="go('perfil')">
-<i data-lucide="user"></i>
-</button>
-
-<button id="btn-refeicoes" onclick="go('refeicoes')">
-<i data-lucide="utensils-crossed"></i>
-</button>
+  <button id="btn-perfil" class="active" onclick="go('perfil')">
+    <i data-lucide="user"></i>
+  </button>
+  <button id="btn-refeicoes" onclick="go('refeicoes')">
+    <i data-lucide="utensils-crossed"></i>
+  </button>
 </nav>
 
 <script src="app.js"></script>
-
-<script>
-function go(tab){
- document.querySelectorAll("section").forEach(s=>s.classList.remove("active"));
- document.getElementById(tab).classList.add("active");
-
- document.querySelectorAll("nav button").forEach(b=>b.classList.remove("active"));
- document.getElementById("btn-"+tab).classList.add("active");
-}
-
-lucide.createIcons();
-</script>
+<script>lucide.createIcons();</script>
 
 </body>
 </html>
