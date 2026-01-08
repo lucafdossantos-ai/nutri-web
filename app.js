@@ -116,17 +116,26 @@ function go(id){
   if(id==="historico") carregarCalendario();
 }
 
-// TMB (CORRIGIDO)
 function calcularTMB(){
-  const s=sexo.value,i=+idade.value,p=+peso.value,a=+altura.value,o=objetivo.value;
-  const tmbVal = s==="m"
-    ? 88.36 + 13.4*p + 4.8*a - 5.7*i
-    : 447.6 + 9.2*p + 3.1*a - 4.3*i;
+  const s = sexo.value;
+  const i = +idade.value;
+  const p = +peso.value;
+  const a = +altura.value;
+  const o = objetivo.value;
 
-  metaDiaria = tmbVal + (o==="emagrecer"?-400:o==="ganhar"?400:0);
+  // Mifflin-St Jeor (mais precisa)
+  let tmbVal = s === "m"
+    ? (10 * p) + (6.25 * a) - (5 * i) + 5
+    : (10 * p) + (6.25 * a) - (5 * i) - 161;
 
-  document.getElementById("tmb").textContent=Math.round(tmbVal);
-  document.getElementById("meta").textContent=Math.round(metaDiaria);
+  // ajuste por objetivo
+  metaDiaria = tmbVal + (
+    o === "emagrecer" ? -400 :
+    o === "ganhar"    ?  400 : 0
+  );
+
+  tmb.textContent = Math.round(tmbVal);
+  meta.textContent = Math.round(metaDiaria);
   atualizarRestante();
   desenharGrafico();
 }
