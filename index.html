@@ -4,7 +4,6 @@
 <meta charset="utf-8" />
 <title>Nutri+ Web</title>
 
-<!-- ÍCONES -->
 <script src="https://unpkg.com/lucide@latest"></script>
 
 <style>
@@ -18,14 +17,24 @@
     --danger: #ef4444;
   }
 
+  body.light {
+    --bg: #f3f4f6;
+    --panel: white;
+    --border: rgba(0,0,0,.08);
+    --text: #1f2937;
+    --muted: #6b7280;
+    --primary: #3b82f6;
+  }
+
   * { box-sizing: border-box; }
 
   body {
     font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Arial, sans-serif;
-    padding: 16px;
+    padding: 16px 16px 80px;
     background: var(--bg);
     color: var(--text);
     min-height: 100vh;
+    transition: background .3s, color .3s;
   }
 
   .fade { animation: fade .35s ease; }
@@ -74,12 +83,10 @@
     background: var(--panel);
     box-shadow: 0 25px 40px rgb(0 0 0 / .25);
     backdrop-filter: blur(16px);
+    transition: background .3s, border .3s, box-shadow .3s;
   }
 
-  label {
-    font-size: 13px;
-    color: var(--muted);
-  }
+  label { font-size: 13px; color: var(--muted); }
 
   input, select {
     width: 100%;
@@ -88,9 +95,13 @@
     margin-bottom: 14px;
     border-radius: 12px;
     border: 1px solid var(--border);
-    background: rgba(0,0,0,.4);
+    background: rgba(0,0,0,.25);
     color: var(--text);
-    transition: border .2s, transform .1s;
+    transition: border .2s, transform .1s, background .3s;
+  }
+
+  body.light input, body.light select {
+    background:#f9fafb;
   }
 
   input:focus, select:focus {
@@ -115,7 +126,7 @@
   }
 
   button:active { transform: scale(.96); opacity: .8; }
-  button.danger { background: var(--danger); box-shadow:0 10px 18px rgba(239,68,68,.25); }
+  button.danger { background: var(--danger); }
 
   .meal-item {
     display:flex;
@@ -125,9 +136,13 @@
     border-bottom:1px solid rgba(255,255,255,.08);
   }
 
-  .meal-item button {
-    background: rgba(255,255,255,.08);
-    box-shadow:none;
+  .meal-item.added {
+    animation: pop .25s ease;
+  }
+
+  @keyframes pop {
+    from { transform: scale(.9); opacity:.2; }
+    to { transform: scale(1); opacity:1; }
   }
 
   .search-box { position:relative; }
@@ -162,6 +177,35 @@
     border: 1px solid var(--border);
     background: rgba(0,0,0,.35);
   }
+
+  /* NAV INFERIOR */
+  nav {
+    position:fixed;
+    bottom:0;
+    left:0;
+    right:0;
+    background: rgba(15,23,42,.85);
+    backdrop-filter: blur(14px);
+    border-top:1px solid var(--border);
+    display:flex;
+    justify-content:space-around;
+    padding:8px 0;
+  }
+
+  nav button {
+    background: transparent;
+    color: var(--text);
+    box-shadow:none;
+    flex:1;
+    justify-content:center;
+  }
+
+  nav button.active {
+    color: var(--primary);
+  }
+
+  section { display:none; }
+  section.active { display:block; }
 </style>
 </head>
 
@@ -173,106 +217,131 @@
     Nutri+
   </h1>
 
-  <div class="chip">
-    beta
-  </div>
+  <button onclick="toggleTheme()">
+    <i data-lucide="sun"></i>
+  </button>
 </header>
 
 <p style="color:#9ca3af; margin-top:0;">
   Seu controle diário — simples e inteligente.
 </p>
 
-<h2><i data-lucide="user"></i> Perfil</h2>
+<section id="perfil" class="active fade">
+  <h2><i data-lucide="user"></i> Perfil</h2>
 
-<div class="box fade">
-  <label>Sexo (m/f)</label>
-  <input id="sexo">
+  <div class="box fade">
+    <label>Sexo (m/f)</label>
+    <input id="sexo">
 
-  <label>Idade</label>
-  <input id="idade" type="number">
+    <label>Idade</label>
+    <input id="idade" type="number">
 
-  <label>Peso (kg)</label>
-  <input id="peso" type="number">
+    <label>Peso (kg)</label>
+    <input id="peso" type="number">
 
-  <label>Altura (cm)</label>
-  <input id="altura" type="number">
+    <label>Altura (cm)</label>
+    <input id="altura" type="number">
 
-  <button onclick="calcular()">
-    <i data-lucide="activity"></i>
-    Calcular TMB
-  </button>
+    <button onclick="calcular()">
+      <i data-lucide="activity"></i>
+      Calcular TMB
+    </button>
 
-  <p><strong>TMB:</strong> <span id="resultado">—</span></p>
+    <p><strong>TMB:</strong> <span id="resultado">—</span></p>
 
-  <label>Objetivo</label>
-  <select id="objetivo">
-    <option value="manter">Manter</option>
-    <option value="emagrecer">Emagrecer</option>
-    <option value="ganhar">Ganhar Massa</option>
-  </select>
+    <label>Objetivo</label>
+    <select id="objetivo">
+      <option value="manter">Manter</option>
+      <option value="emagrecer">Emagrecer</option>
+      <option value="ganhar">Ganhar Massa</option>
+    </select>
 
-  <p><strong>Meta diária:</strong> <span id="meta">—</span></p>
-</div>
-
-
-<h2><i data-lucide="utensils-crossed"></i> Refeições do dia</h2>
-
-<div class="box fade">
-
-  <!-- BUSCA -->
-  <label>Buscar alimento</label>
-  <div class="search-box">
-    <input id="search" oninput="buscarAlimento()" placeholder="Ex: arroz, frango, banana…">
-    <div id="results" class="search-results"></div>
+    <p><strong>Meta diária:</strong> <span id="meta">—</span></p>
   </div>
+</section>
 
-  <label>Alimento</label>
-  <input id="food" oninput="preencherAutomatico()">
+<section id="refeicoes" class="fade">
+  <h2><i data-lucide="utensils-crossed"></i> Refeições do dia</h2>
 
-  <label>Calorias</label>
-  <input id="kcal" type="number">
+  <div class="box fade">
 
-  <label>Carboidratos (g)</label>
-  <input id="carb" type="number">
+    <label>Buscar alimento</label>
+    <div class="search-box">
+      <input id="search" oninput="buscarAlimento()" placeholder="Ex: arroz, frango, banana…">
+      <div id="results" class="search-results"></div>
+    </div>
 
-  <label>Proteína (g)</label>
-  <input id="prot" type="number">
+    <label>Alimento</label>
+    <input id="food" oninput="preencherAutomatico()">
 
-  <label>Gorduras (g)</label>
-  <input id="fat" type="number">
+    <label>Calorias</label>
+    <input id="kcal" type="number">
 
-  <button onclick="adicionar()">
-    <i data-lucide="plus"></i>
-    Adicionar
-  </button>
+    <label>Carboidratos (g)</label>
+    <input id="carb" type="number">
 
-  <p><strong>Total do dia:</strong> <span id="total">0</span></p>
-  <p><strong>Restam:</strong> <span id="restam">0</span></p>
+    <label>Proteína (g)</label>
+    <input id="prot" type="number">
 
-  <p><strong>Carboidratos:</strong> <span id="tcarb">0</span></p>
-  <p><strong>Proteína:</strong> <span id="tprot">0</span></p>
-  <p><strong>Gorduras:</strong> <span id="tfat">0</span></p>
+    <label>Gorduras (g)</label>
+    <input id="fat" type="number">
 
-  <button class="danger" onclick="limparDia()">
-    <i data-lucide="trash-2"></i>
-    Limpar dia
-  </button>
+    <button onclick="adicionar()">
+      <i data-lucide="plus"></i>
+      Adicionar
+    </button>
 
-  <h3>Sugestões</h3>
-  <p id="sugestoes">—</p>
+    <p><strong>Total do dia:</strong> <span id="total">0</span></p>
+    <p><strong>Restam:</strong> <span id="restam">0</span></p>
 
-  <ul id="lista"></ul>
+    <p><strong>Carboidratos:</strong> <span id="tcarb">0</span></p>
+    <p><strong>Proteína:</strong> <span id="tprot">0</span></p>
+    <p><strong>Gorduras:</strong> <span id="tfat">0</span></p>
 
-  <h3>Progresso</h3>
-  <canvas id="grafico" width="150" height="150"></canvas>
+    <button class="danger" onclick="limparDia()">
+      <i data-lucide="trash-2"></i>
+      Limpar dia
+    </button>
 
-</div>
+    <h3>Sugestões</h3>
+    <p id="sugestoes">—</p>
+
+    <ul id="lista"></ul>
+
+    <h3>Progresso</h3>
+    <canvas id="grafico" width="150" height="150"></canvas>
+
+  </div>
+</section>
 
 <script src="app.js"></script>
 
 <script>
+  // Navegação inferior
+  function go(tab) {
+    document.querySelectorAll("section").forEach(s => s.classList.remove("active"));
+    document.getElementById(tab).classList.add("active");
+
+    document.querySelectorAll("nav button").forEach(b => b.classList.remove("active"));
+    document.getElementById("btn-"+tab).classList.add("active");
+  }
+
+  // tema claro/escuro
+  function toggleTheme() {
+    document.body.classList.toggle("light");
+  }
+
   lucide.createIcons();
 </script>
+
+<nav>
+  <button id="btn-perfil" class="active" onclick="go('perfil')">
+    <i data-lucide="user"></i>
+  </button>
+  <button id="btn-refeicoes" onclick="go('refeicoes')">
+    <i data-lucide="utensils-crossed"></i>
+  </button>
+</nav>
 
 </body>
 </html>
