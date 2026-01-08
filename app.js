@@ -268,3 +268,20 @@ function salvarDia(){
 // AUTO LOGIN
 const u=localStorage.getItem("nutri_user");
 if(u){user=u;userLabel.textContent=user;go("perfil");}
+// ===== TEMA =====
+function toggleTheme(){
+  document.body.classList.toggle("light");
+  const isLight = document.body.classList.contains("light");
+  localStorage.setItem("nutri_theme", isLight ? "light" : "dark");
+  themeBtn.textContent = isLight ? "☀️" : "🌙";
+}
+
+// carregar tema
+if(localStorage.getItem("nutri_theme")==="light"){
+  document.body.classList.add("light");
+  themeBtn.textContent="☀️";
+}
+
+// ===== TODO O RESTO DO JS PERMANECE IGUAL =====
+// banco de alimentos, login, TMB, gráfico circular,
+// autocomplete, histórico, limpar dia etc.
