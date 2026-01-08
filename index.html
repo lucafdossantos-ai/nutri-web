@@ -58,7 +58,8 @@ button.danger{background:var(--danger)}
   cursor:pointer;
 }
 .autocomplete div:hover{background:#ffffff22}
-canvas{width:100%;height:120px}
+.small{font-size:13px;color:var(--muted)}
+canvas{display:block;margin:20px auto}
 .calendar{
   display:grid;
   grid-template-columns:repeat(7,1fr);
@@ -74,7 +75,6 @@ canvas{width:100%;height:120px}
   background:var(--primary);
   color:#000;
 }
-.small{font-size:13px;color:var(--muted)}
 nav{
   position:fixed;
   bottom:0;
@@ -105,7 +105,7 @@ nav button.active{color:var(--primary)}
   </div>
 </section>
 
-<!-- PERFIL -->
+<!-- PERFIL / TMB -->
 <section id="perfil">
   <div class="card">
     <p>👤 <strong id="userLabel"></strong></p>
@@ -162,10 +162,10 @@ nav button.active{color:var(--primary)}
 
     <button onclick="adicionar()">Adicionar</button>
 
+    <canvas id="grafico" width="220" height="220"></canvas>
+
     <p>🔥 <span id="totalKcal">0</span> kcal</p>
     <p>🍞 <span id="totalCarb">0</span> g | 🥩 <span id="totalProt">0</span> g | 🧈 <span id="totalFat">0</span> g</p>
-
-    <canvas id="grafico"></canvas>
 
     <button class="danger" onclick="limparDia()">Limpar dia</button>
 
