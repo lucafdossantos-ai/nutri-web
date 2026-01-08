@@ -7,337 +7,214 @@
 <script src="https://unpkg.com/lucide@latest"></script>
 
 <style>
-  :root {
-    --bg: linear-gradient(180deg, #0f172a, #020617);
-    --panel: rgba(17, 25, 40, .7);
-    --border: rgba(255, 255, 255, .1);
-    --text: #e5e7eb;
-    --muted: #9ca3af;
-    --primary: #60a5fa;
-    --danger: #ef4444;
-  }
+:root {
+  --bg: linear-gradient(180deg, #0f172a, #020617);
+  --panel: rgba(17,25,40,.7);
+  --border: rgba(255,255,255,.1);
+  --text: #e5e7eb;
+  --muted: #9ca3af;
+  --primary: #60a5fa;
+  --danger: #ef4444;
+}
 
-  body.light {
-    --bg: #f3f4f6;
-    --panel: white;
-    --border: rgba(0,0,0,.08);
-    --text: #1f2937;
-    --muted: #6b7280;
-    --primary: #3b82f6;
-  }
+body {
+  margin:0;
+  font-family: -apple-system,BlinkMacSystemFont,"Segoe UI",Arial;
+  background: var(--bg);
+  color: var(--text);
+  padding: 16px 16px 80px;
+}
 
-  * { box-sizing: border-box; }
+/* glass cards */
+.box {
+  border:1px solid var(--border);
+  border-radius:18px;
+  padding:14px;
+  background: var(--panel);
+  backdrop-filter: blur(14px);
+  box-shadow:0 25px 40px rgba(0,0,0,.25);
+  margin-top:14px;
+}
 
-  body {
-    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Arial, sans-serif;
-    padding: 16px 16px 80px;
-    background: var(--bg);
-    color: var(--text);
-    min-height: 100vh;
-    transition: background .3s, color .3s;
-  }
+input, select {
+  width:100%;
+  padding:12px;
+  border-radius:12px;
+  margin-top:6px;
+  margin-bottom:14px;
+  border:1px solid var(--border);
+  background:rgba(0,0,0,.35);
+  color:var(--text);
+}
 
-  .fade { animation: fade .35s ease; }
+button {
+  padding:10px 14px;
+  border-radius:12px;
+  border:none;
+  background:var(--primary);
+  color:white;
+  font-weight:600;
+  display:inline-flex;
+  gap:6px;
+  align-items:center;
+  box-shadow:0 10px 20px rgba(96,165,250,.25);
+}
 
-  @keyframes fade {
-    from { opacity: 0; transform: translateY(6px); }
-    to   { opacity: 1; transform: translateY(0); }
-  }
+button.danger { background:var(--danger); }
 
-  header {
-    display:flex;
-    align-items:center;
-    justify-content:space-between;
-    margin-bottom: 14px;
-  }
+.fade { animation: fade .25s ease; }
+@keyframes fade { from{opacity:0;transform:translateY(8px)} }
 
-  header h1 {
-    display:flex;
-    gap:8px;
-    align-items:center;
-    margin:0;
-  }
+/* telas */
+section { display:none; }
+section.active { display:block; }
 
-  .chip {
-    padding:6px 10px;
-    border-radius: 999px;
-    border:1px solid var(--border);
-    background: rgba(255,255,255,.06);
-    font-size: 12px;
-  }
+/* barra inferior */
+nav{
+  position:fixed;
+  bottom:0;left:0;right:0;
+  height:62px;
+  backdrop-filter:blur(14px);
+  background:rgba(10,15,30,.8);
+  border-top:1px solid rgba(255,255,255,.1);
+  display:flex;
+  justify-content:space-around;
+  align-items:center;
+}
 
-  h2 {
-    margin-top: 18px;
-    margin-bottom: 10px;
-    font-size: 18px;
-    display:flex;
-    align-items:center;
-    gap:8px;
-  }
+nav button{
+  background:none;
+  box-shadow:none;
+  color:#9ca3af;
+}
 
-  .box {
-    border: 1px solid var(--border);
-    padding: 14px;
-    margin-top: 14px;
-    border-radius: 18px;
-    background: var(--panel);
-    box-shadow: 0 25px 40px rgb(0 0 0 / .25);
-    backdrop-filter: blur(16px);
-    transition: background .3s, border .3s, box-shadow .3s;
-  }
+nav button.active{
+  background:rgba(255,255,255,.1);
+  color:white;
+}
 
-  label { font-size: 13px; color: var(--muted); }
-
-  input, select {
-    width: 100%;
-    padding: 12px;
-    margin-top: 6px;
-    margin-bottom: 14px;
-    border-radius: 12px;
-    border: 1px solid var(--border);
-    background: rgba(0,0,0,.25);
-    color: var(--text);
-    transition: border .2s, transform .1s, background .3s;
-  }
-
-  body.light input, body.light select {
-    background:#f9fafb;
-  }
-
-  input:focus, select:focus {
-    border: 1px solid var(--primary);
-    outline: none;
-    transform: translateY(-1px);
-  }
-
-  button {
-    padding: 11px 14px;
-    border-radius: 12px;
-    border: none;
-    background: var(--primary);
-    color: white;
-    font-weight: 600;
-    cursor: pointer;
-    display:inline-flex;
-    align-items:center;
-    gap:6px;
-    transition: transform .12s, opacity .15s, box-shadow .15s;
-    box-shadow: 0 10px 20px rgba(96,165,250,.25);
-  }
-
-  button:active { transform: scale(.96); opacity: .8; }
-  button.danger { background: var(--danger); }
-
-  .meal-item {
-    display:flex;
-    justify-content:space-between;
-    align-items:center;
-    padding:10px 0;
-    border-bottom:1px solid rgba(255,255,255,.08);
-  }
-
-  .meal-item.added {
-    animation: pop .25s ease;
-  }
-
-  @keyframes pop {
-    from { transform: scale(.9); opacity:.2; }
-    to { transform: scale(1); opacity:1; }
-  }
-
-  .search-box { position:relative; }
-
-  .search-results {
-    position:absolute;
-    top:100%;
-    left:0;
-    right:0;
-    background: rgba(10,15,30,.95);
-    border:1px solid var(--border);
-    border-radius:14px;
-    margin-top:4px;
-    max-height:200px;
-    overflow-y:auto;
-    display:none;
-    z-index:5;
-  }
-
-  .search-results div {
-    padding:10px 12px;
-    cursor:pointer;
-  }
-
-  .search-results div:hover {
-    background: rgba(255,255,255,.06);
-  }
-
-  canvas {
-    margin-top: 14px;
-    border-radius: 14px;
-    border: 1px solid var(--border);
-    background: rgba(0,0,0,.35);
-  }
-
-  /* NAV INFERIOR */
-  nav {
-    position:fixed;
-    bottom:0;
-    left:0;
-    right:0;
-    background: rgba(15,23,42,.85);
-    backdrop-filter: blur(14px);
-    border-top:1px solid var(--border);
-    display:flex;
-    justify-content:space-around;
-    padding:8px 0;
-  }
-
-  nav button {
-    background: transparent;
-    color: var(--text);
-    box-shadow:none;
-    flex:1;
-    justify-content:center;
-  }
-
-  nav button.active {
-    color: var(--primary);
-  }
-
-  section { display:none; }
-  section.active { display:block; }
+/* animação add */
+.pulse { animation:pulse .35s ease; }
+@keyframes pulse {
+  0%{transform:scale(.96);opacity:.9}
+  100%{transform:scale(1);opacity:1}
+}
 </style>
 </head>
 
-<body class="fade">
+<body>
 
 <header>
-  <h1>
-    <i data-lucide="apple"></i>
-    Nutri+
-  </h1>
-
+  <h1>Nutri+</h1>
   <button onclick="toggleTheme()">
     <i data-lucide="sun"></i>
   </button>
 </header>
 
-<p style="color:#9ca3af; margin-top:0;">
-  Seu controle diário — simples e inteligente.
-</p>
+<!-- PERFIL -->
+<section id="perfil" class="active">
 
-<section id="perfil" class="active fade">
-  <h2><i data-lucide="user"></i> Perfil</h2>
+<h2>Perfil</h2>
 
-  <div class="box fade">
-    <label>Sexo (m/f)</label>
-    <input id="sexo">
+<div class="box fade">
+  <label>Sexo</label>
+  <input id="sexo">
 
-    <label>Idade</label>
-    <input id="idade" type="number">
+  <label>Idade</label>
+  <input id="idade" type="number">
 
-    <label>Peso (kg)</label>
-    <input id="peso" type="number">
+  <label>Peso (kg)</label>
+  <input id="peso" type="number">
 
-    <label>Altura (cm)</label>
-    <input id="altura" type="number">
+  <label>Altura (cm)</label>
+  <input id="altura" type="number">
 
-    <button onclick="calcular()">
-      <i data-lucide="activity"></i>
-      Calcular TMB
-    </button>
+  <button onclick="calcular()">
+    <i data-lucide="activity"></i> Calcular TMB
+  </button>
 
-    <p><strong>TMB:</strong> <span id="resultado">—</span></p>
+  <p><strong>TMB:</strong> <span id="resultado">—</span></p>
 
-    <label>Objetivo</label>
-    <select id="objetivo">
-      <option value="manter">Manter</option>
-      <option value="emagrecer">Emagrecer</option>
-      <option value="ganhar">Ganhar Massa</option>
-    </select>
+  <label>Objetivo</label>
+  <select id="objetivo">
+    <option value="manter">Manter</option>
+    <option value="emagrecer">Emagrecer</option>
+    <option value="ganhar">Ganhar Massa</option>
+  </select>
 
-    <p><strong>Meta diária:</strong> <span id="meta">—</span></p>
-  </div>
+  <p><strong>Meta diária:</strong> <span id="meta">—</span></p>
+</div>
+
 </section>
 
-<section id="refeicoes" class="fade">
-  <h2><i data-lucide="utensils-crossed"></i> Refeições do dia</h2>
+<!-- REFEIÇÕES -->
+<section id="refeicoes">
 
-  <div class="box fade">
+<h2>Refeições do dia</h2>
 
-    <label>Buscar alimento</label>
-    <div class="search-box">
-      <input id="search" oninput="buscarAlimento()" placeholder="Ex: arroz, frango, banana…">
-      <div id="results" class="search-results"></div>
-    </div>
+<div class="box fade">
 
-    <label>Alimento</label>
-    <input id="food" oninput="preencherAutomatico()">
+  <label>Buscar alimento</label>
+  <input id="search" oninput="buscarAlimento()" placeholder="Ex: arroz, frango, banana…">
+  <div id="results" class="search-results"></div>
 
-    <label>Calorias</label>
-    <input id="kcal" type="number">
+  <label>Alimento</label>
+  <input id="food" oninput="preencherAutomatico()">
 
-    <label>Carboidratos (g)</label>
-    <input id="carb" type="number">
+  <label>Calorias</label>
+  <input id="kcal" type="number">
 
-    <label>Proteína (g)</label>
-    <input id="prot" type="number">
+  <label>Carboidratos</label>
+  <input id="carb" type="number">
 
-    <label>Gorduras (g)</label>
-    <input id="fat" type="number">
+  <label>Proteína</label>
+  <input id="prot" type="number">
 
-    <button onclick="adicionar()">
-      <i data-lucide="plus"></i>
-      Adicionar
-    </button>
+  <label>Gorduras</label>
+  <input id="fat" type="number">
 
-    <p><strong>Total do dia:</strong> <span id="total">0</span></p>
-    <p><strong>Restam:</strong> <span id="restam">0</span></p>
+  <button onclick="adicionar()">
+    <i data-lucide="plus"></i> Adicionar
+  </button>
 
-    <p><strong>Carboidratos:</strong> <span id="tcarb">0</span></p>
-    <p><strong>Proteína:</strong> <span id="tprot">0</span></p>
-    <p><strong>Gorduras:</strong> <span id="tfat">0</span></p>
+  <p><strong>Total:</strong> <span id="total">0</span></p>
+  <p><strong>Restam:</strong> <span id="restam">0</span></p>
 
-    <button class="danger" onclick="limparDia()">
-      <i data-lucide="trash-2"></i>
-      Limpar dia
-    </button>
+  <ul id="lista"></ul>
 
-    <h3>Sugestões</h3>
-    <p id="sugestoes">—</p>
+  <button class="danger" onclick="limparDia()">
+    <i data-lucide="trash-2"></i> Limpar dia
+  </button>
 
-    <ul id="lista"></ul>
+  <p id="sugestoes">—</p>
 
-    <h3>Progresso</h3>
-    <canvas id="grafico" width="150" height="150"></canvas>
+</div>
 
-  </div>
 </section>
 
 <script src="app.js"></script>
 
 <script>
-  // Navegação inferior
-  function go(tab) {
-    document.querySelectorAll("section").forEach(s => s.classList.remove("active"));
-    document.getElementById(tab).classList.add("active");
+lucide.createIcons();
 
-    document.querySelectorAll("nav button").forEach(b => b.classList.remove("active"));
-    document.getElementById("btn-"+tab).classList.add("active");
-  }
+function toggleTheme(){
+  document.body.classList.toggle("light");
+}
 
-  // tema claro/escuro
-  function toggleTheme() {
-    document.body.classList.toggle("light");
-  }
+function go(tab){
+  document.querySelectorAll("section").forEach(s=>s.classList.remove("active"));
+  document.getElementById(tab).classList.add("active");
 
-  lucide.createIcons();
+  document.querySelectorAll("nav button").forEach(b=>b.classList.remove("active"));
+  document.getElementById("btn-"+tab).classList.add("active");
+}
 </script>
 
 <nav>
   <button id="btn-perfil" class="active" onclick="go('perfil')">
     <i data-lucide="user"></i>
   </button>
+
   <button id="btn-refeicoes" onclick="go('refeicoes')">
     <i data-lucide="utensils-crossed"></i>
   </button>
